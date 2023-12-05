@@ -5,7 +5,7 @@ public class User{
     private final int y = 30; //array size depending on questionnaire size, 30 for testing
     private String username;
     private String password;
-    private String[] answers = new String[y];
+    private Answers[] answers = new Answers[y];
     private static LinkedList<User> UserList = new LinkedList(); //list containing all created users
 
     static User nullUser = new User(null, null); //null User used to show that the connection failed
