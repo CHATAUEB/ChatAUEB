@@ -33,33 +33,33 @@ public class UserMenu {
     }
 
     private static void loginUser() {
-        System.out.print("Enter username: ");
+        System.out.println("Enter username: ");
         String username = scanner.nextLine();
-        System.out.print("Enter password: ");
+        System.out.println("Enter password: ");
         String password = scanner.nextLine();
 
         User user = User.connect(username, password);
     }
 
     private static void signUpUser() {
-        System.out.print("Enter username: ");
+        System.out.println("Enter username: ");
         String username = scanner.nextLine();
-        System.out.print("Enter password: ");
+        System.out.println("Enter password: ");
         String password = scanner.nextLine();
 
         new User(username, password);
     }
 
     private static void changePassword() {
-        System.out.print("Enter username: ");
+        System.out.println("Enter username: ");
         String username = scanner.nextLine();
-        System.out.print("Enter current password: ");
+        System.out.println("Enter current password: ");
         String password = scanner.nextLine();
 
         User user = User.connect(username, password);
 
         if (user != User.nullUser) {
-            System.out.print("Enter new password: ");
+            System.out.println("Enter new password: ");
             String newPassword = scanner.nextLine();
             user.SetPassword(newPassword);
         } else {
