@@ -33,7 +33,7 @@ public class UserMenu {
     }
 
     private static void loginUser() {
-        System.out.println("Enter username: ");
+        System.out.printf("Enter username: \n");
         String username = scanner.nextLine();
         System.out.println("Enter password: ");
         String password = scanner.nextLine();
