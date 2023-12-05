@@ -7,8 +7,7 @@ public class UserMenu {
     public static void menu() {
 
         while (true) {
-            System.out.println("Welcome to Chataueb. if you wish to sign up press 1. If you are already registered press 2");
-            System.out.println("If you want to change password press 3. If you want to Exit press 4");
+            System.out.println("Welcome to ChatAUEB.\n If you wish to sign up press 1.\n If you are already registered press 2.\n If you want to change password press 3.\n If you want to Exit press 4.\n");
             System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
