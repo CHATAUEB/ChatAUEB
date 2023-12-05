@@ -7,6 +7,8 @@ public class Main {
             System.Out.Println("welcome to chat aueb. if u wish to sign up press 1. If u are already registered press 2")
             readAns = read.nextInt();
             if (ans == 1) {
+                String username;
+                String password;
                 User(String username, String password);
                 System.out.println("Please insert your username");
                 String username = read.nextLine();
@@ -14,6 +16,7 @@ public class Main {
                 String password = read.nextLine();
                 break;
             } else if (ans == 2) {
+                
                 //connect(log in)
                 break;
             }
