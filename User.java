@@ -1,36 +1,40 @@
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class User{
+public class User {
     private final int y = 30; //array size depending on questionnaire size, 30 for testing
     private String username;
     private String password;
-    private Answers[] answers = new Answers[y];
+    private String[] answers = new String[y];
     private static LinkedList<User> UserList = new LinkedList(); //list containing all created users
 
     static User nullUser = new User(null, null); //null User used to show that the connection failed
 
     //A constructor for users with a username and a password. It checks if the username you added already exists and creates a new User object if the username is unique
-    public User(String username , String password) {   
-
-        boolean flag = true; // metqavliti alithiac emfanisis username
-        
-        for(User i : UserList) {
-            if (i.username.equals(username)) { //checking if the username is taken
-                flag = false; //changes the flag to false to show that the username is taken
-                System.out.println("this username is already taken!!!");
+    public User(String username, String password) {
+        boolean flag = true; // Flag to track if the username is taken
+    
+        if (UserList.size() != 0) {
+            for (User i : UserList) {
+                // Check if the username is not null and equals the provided username
+                if (i.username != null && i.username.equals(username)) {
+                    flag = false; // Set the flag to false to indicate that the username is taken
+                    System.out.println("This username is already taken!!!");
+                    break;  // No need to continue checking, we found a match
+                }
             }
         }
-            if (flag) {
-                this.username = username; //creation of the object User with the given username and password
-                this.password = password; 
-                UserList.add(this); //Addition to the list of Users for later reference
-                System.out.println("registration successfull!!! Welcome " + this.username);
-            } else { 
-                System.out.println("Registration failed: Username already taken");
-            }       
+    
+        if (flag) {
+            this.username = username; // Create the User object with the given username and password
+            this.password = password;
+            UserList.add(this); // Add the User to the list of Users for later reference
+            System.out.println("Registration successful!!! Welcome " + this.username);
+        } else {
+            System.out.println("Registration failed: Username already taken");
+        }
     }
-
+    
     //A method used to connect into one of the users in the userList, if the connection is successful it returns the user with the given credentials, if not it returns the nullUser in line 11
     public static User connect(String username, String password) {
         
