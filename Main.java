@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class UserMenu {
 
-    Scanner scanner = new Scanner(System.in);
+    static Scanner scanner = new Scanner(System.in);
     
     public static void menu() {
 
