@@ -33,10 +33,12 @@ public class UserMenu {
     }
 
     private static void loginUser() {
-        System.out.printf("Enter username: \n");
+        System.out.println("Enter username: ");
         String username = scanner.nextLine();
+        scanner.nextLine();
         System.out.println("Enter password: ");
         String password = scanner.nextLine();
+      
 
         User user = User.connect(username, password);
     }
@@ -44,10 +46,11 @@ public class UserMenu {
     private static void signUpUser() {
         System.out.println("Enter username: ");
         String username = scanner.nextLine();
+        scanner.nextLine();
         System.out.println("Enter password: ");
         String password = scanner.nextLine();
 
-        new User(username, password);
+        User user = new User(username, password);
     }
 
     private static void changePassword() {
@@ -65,5 +68,10 @@ public class UserMenu {
         } else {
             System.out.println("Change password failed. Invalid username or password.");
         }
+    }
+    public static void main(String[] args) {
+        menu();
+
+
     }
 }
