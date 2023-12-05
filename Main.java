@@ -37,7 +37,7 @@ public class UserMenu {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Welcome to the User Menu!");
+            System.out.println("Welcome to the User Menu!, nigger spilios");
             System.out.println("1. Log In");
             System.out.println("2. Sign Up");
             System.out.println("3. Change Password");
