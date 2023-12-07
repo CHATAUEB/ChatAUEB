@@ -14,10 +14,10 @@ public class UserMenu {
 
             switch (choice) {
                 case 1:
-                    loginUser();
+                    signUpUser();
                     break;
                 case 2:
-                    signUpUser();
+                    loginUser();
                     break;
                 case 3:
                     changePassword();
