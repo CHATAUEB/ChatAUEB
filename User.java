@@ -23,7 +23,7 @@ public class User{
     }
 
     public static User signUp(String username, String password) {
-        User retUser;
+        User returnUser;
         if (username != null && password != null) {    
             boolean flag = true; // metavliti alithiac emfanisis username
             if (UserList.size() > 1) {
@@ -35,9 +35,9 @@ public class User{
                 }
             }
             if (flag) {
-                retUser = new User(username, password);
+                returnUser = new User(username, password);
                 System.out.print("Registration successful! Welcome " + username + "\n");
-                return retUser;
+                return returnUser;
             } else {
                 System.out.println("Registration failed: username already taken");
                 return nullUser; 
@@ -49,27 +49,32 @@ public class User{
 
 
     //A method used to connect into one of the users in the userList, if the connection is successful it returns the user with the given credentials, if not it returns the nullUser in line 11
-    public static User connect(String username, String password) {
+    public static User logIn(String username, String password) {
         
         User returnUser = nullUser; //the User object to be returned by the method
-        
-        for (User i  : UserList) {
-            if (i.username.equals(username)) { //checking if the username exists
-                if (i.password.equals(password)) { //If the username does exist, checking the password
-                    System.out.println("Succesful connection");
-                    returnUser = i; //Returns the User object 
-                } else {
-                    System.out.println("Wrong password, please try again");
-                    returnUser = nullUser; //Returns the null User, showing that the connection failed
+        if (username != null && password != null) {     
+            for (User i  : UserList) {
+                if (i.username != null) {
+                    if (i.username.equals(username)) { //checking if the username exists
+                        if (i.password.equals(password)) { //If the username does exist, checking the password
+                            System.out.println("Succesful connection! Welcome " + username);
+                            returnUser = i; //Returns the User object
+                            break; 
+                        } else {
+                            System.out.println("Wrong password, please try again");
+                            returnUser = nullUser; //Returns the null User, showing that the connection failed
+                        }
+                    } else {
+                        System.out.println("The username does not exist");
+                        returnUser = nullUser; //Returns the null User, showing that the connection failed
+                    }
                 }
-            } else {
-                System.out.println("The username does not exist");
-                returnUser = nullUser; //Returns the null User, showing that the connection failed
             }
+            return returnUser;
+        } else {
+            return nullUser;
         }
-        return returnUser;
     }
-
     //Method used to change the username
     protected void SetUsername(String newUsername) {
         
