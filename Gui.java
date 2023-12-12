@@ -40,16 +40,16 @@ public class Gui {
         int labelHeight = 100; // Height of the label
 
         // Add buttons for sign up, log in, and change password
-        JButton signUpButton = new JButton("Sign");
-        signUpButton.setBounds(10, labelHeight + 20, 100, 30); // Centered vertically based on label height
+        JButton signUpButton = new JButton("Sign Up");
+        signUpButton.setBounds(200, labelHeight, 100, 30); // Centered vertically based on label height
         frame.add(signUpButton);
 
         JButton loginButton = new JButton("Log In");
-        loginButton.setBounds(10, labelHeight + 60, 100, 30); // Centered vertically based on label height
+        loginButton.setBounds(200, labelHeight + 40, 100, 30); // Centered vertically based on label height
         frame.add(loginButton);
 
         JButton changePasswordButton = new JButton("Change Password");
-        changePasswordButton.setBounds(10, labelHeight + 100, 150, 30); // Centered vertically based on label height
+        changePasswordButton.setBounds(175, labelHeight + 80, 150, 30); // Centered vertically based on label height
         frame.add(changePasswordButton);
 
         // Add action listeners for the buttons
