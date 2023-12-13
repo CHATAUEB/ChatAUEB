@@ -86,7 +86,7 @@ public class User{
         System.out.print("\n" + "Password");
         String tempPassword = lineReader.nextLine();
 
-        User tempUser = connect(tempUsername, tempPassword); //Using the connect method in order to check that the person trying to change the username has the credentials of said user
+        User tempUser = logIn(tempUsername, tempPassword); //Using the connect method in order to check that the person trying to change the username has the credentials of said user
 
         lineReader.close();
         
