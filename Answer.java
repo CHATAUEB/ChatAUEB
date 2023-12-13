@@ -1,28 +1,24 @@
-import java.util.Scanner;
+public class Answer {
 
-public abstract class Answer {
-
-    public String answer;
-    public Type type; 
-    public abstract Answer(); //Default constructor, must be overriden by subclasses
-    
-    public static Answer readAnswer(int i) {
-        System.out.println(Questions.questions[i]);
-        Scanner read = new Scanner(System.in);
-        String temp = read.nextLine();
-        boolean flag = checkAnswer(temp);
+    private static final int size = 30;
+    enum AnswerType{
+        NOMINAL, ORDINAL
     }
 
-    public abstract static boolean checkAnswer(int i);
+    private String answer1;
+    private int answer2;
 
-    public static void setAnswer(int i, Answer answer) {
-        this.answer = answer;
+    public Answer(String answer1) {
+        this.answer1 = answer1;
     }
 
-    public static Answer getAnswer() {
-        return this.answer;
+    public Answer(int answer2) {
+        this.answer2 = answer2;
     }
 
-
-
+    Answer[] a = new Answer[size];
+    public void insertAnswers(int number, String answer) {
+        Answer ans = new Answer(answer);
+        a[number] = ans;
+    }
 }
