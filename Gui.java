@@ -61,10 +61,7 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Sign Up button pressed");
-                String[] cred = createCredentialsFrame();
-                //System.out.println(cred[0] + cred[1]);
-                //User user = User.signUp(cred[0], cred[1]);
-                //System.out.println("Welcome " + user.username);
+                createCredentialsDialog(1);
             }
         });
 
@@ -72,7 +69,7 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Log In button pressed");
-                createCredentialsFrame();
+                createCredentialsDialog(2);
             }
         });
 
@@ -80,17 +77,15 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Change Password button pressed");
-                createCredentialsFrame();
+                createCredentialsDialog(3);
             }
         });
     }
 
-    public static String[] createCredentialsFrame() {
+    public static void createCredentialsDialog(int action) {
         
-        String[] cred = new String[2];
-        
-        JFrame credentials = new JFrame("Credentials");
-        credentials.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JDialog credentials = new JDialog();
+        credentials.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         credentials.setSize(500, 500);
 
         credentials.setVisible(true);
@@ -132,12 +127,34 @@ public class Gui {
         enter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cred[0] = userText.getText();
-                cred[1] = passText.getText();
+                String username = userText.getText();
+                String password = passText.getText();
+                User user;
+                switch (action) {
+                    case 1 :
+                        user = User.signUp(username, password);
+                        if (user != User.nullUser) {
+                            //openMainFrame(user);
+                            credentials.dispose();
+                            break;
+                        } else {
+                            credentials.dispose();
+                            createCredentialsDialog(1);
+                            break;
+                        }
+                    case 2 :
+                        user = User.logIn(username, password);
+                        if (user != User.nullUser) {
+                            //openMainFrame(user);
+                            credentials.dispose();
+                        } else {
+                            credentials.dispose();
+                            createCredentialsDialog(2);
+                        }
+                }
             }
+
         });
-        
-        return cred;
 
     }
 

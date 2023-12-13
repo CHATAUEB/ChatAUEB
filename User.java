@@ -28,12 +28,14 @@ public class User{
             boolean flag = true; // metavliti alithiac emfanisis username
             if (UserList.size() > 1) {
                 for(User i : UserList) {
-                    if (i.username.equals(username)) { //checking if the username is taken
-                        flag = false; //changes the flag to false to show that the username is taken
-                        System.out.println("This username is already taken!!!");
+                    if (i.username != null) {
+                        if (i.username.equals(username)) { //checking if the username is taken
+                            flag = false; //changes the flag to false to show that the username is taken
+                            System.out.println("This username is already taken!!!");
+                        }
                     }
                 }
-            }
+            }   
             if (flag) {
                 returnUser = new User(username, password);
                 System.out.print("Registration successful! Welcome " + username + "\n");
@@ -64,10 +66,7 @@ public class User{
                             System.out.println("Wrong password, please try again");
                             returnUser = nullUser; //Returns the null User, showing that the connection failed
                         }
-                    } else {
-                        System.out.println("The username does not exist");
-                        returnUser = nullUser; //Returns the null User, showing that the connection failed
-                    }
+                    } 
                 }
             }
             return returnUser;
@@ -107,7 +106,7 @@ public class User{
         System.out.print("\n" + "Password");
         String tempPassword = lineReader.nextLine();
 
-        User tempUser = connect(tempUsername, tempPassword); //Using the connect method in order to check that the person trying to change the username has the credentials of said user
+        User tempUser = logIn(tempUsername, tempPassword); //Using the connect method in order to check that the person trying to change the username has the credentials of said user
 
         if (tempUser != nullUser) {
             this.password = newPassword; //Changes the password to the new one
