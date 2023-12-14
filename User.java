@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 public class User{
@@ -13,7 +12,7 @@ public class User{
     
     protected static ArrayList<User> UserList = new ArrayList<User>(); //list containing all created users
 
-    static User nullUser = new User(null, null); //null User used to show that the connection failed
+    static User nullUser = new User("", ""); //null User used to show that the connection failed
 
     //A constructor for users with a username and a password.
     public User(String username, String password) {
@@ -21,58 +20,65 @@ public class User{
         this.password = password;
         UserList.add(this);
     }
-
+    //Method used to sign up to the database
     public static User signUp(String username, String password) {
-        User returnUser;
-        if (username != null && password != null) {    
-            boolean flag = true; // metavliti alithiac emfanisis username
-            if (UserList.size() > 1) {
-                for(User i : UserList) {
-                    if (i.username != null) {
-                        if (i.username.equals(username)) { //checking if the username is taken
-                            flag = false; //changes the flag to false to show that the username is taken
-                            System.out.println("This username is already taken!!!");
-                        }
+        User returnUser = nullUser; //If the signUp is not successful the method returns the null user
+        if (username.equals("") || password.equals("")) { //Checking if the credentials are not null
+            System.out.println("Please enter valid credentials");
+        } else { //If the credentials are valid we should check if the username is taken
+            boolean taken = false; //Boolean variable used to check the availability of the username
+            for (User tempUser : UserList) { //Getting the credentials from every User in the UserList
+                if (tempUser.username.equals("")) { 
+                    //If the username is null that means that tempUser is nullUser and in this iteration nothing should happen
+                } else {
+                    if (tempUser.username.equals(username)) { //If one user has the same username as the one from the inputs
+                        taken = true; //The boolean variable becomes true showing that we found a user with the same username
+                        System.out.println("Username is taken. Please try again");
+                        break; //Break from the loop, no need to check any further
+                    } else {
+                        taken = false;
                     }
                 }
-            }   
-            if (flag) {
+            }
+            if (!taken) { //If there are no matches, the username is available and thus a User objected is created
                 returnUser = new User(username, password);
-                System.out.print("Registration successful! Welcome " + username + "\n");
-                return returnUser;
-            } else {
-                System.out.println("Registration failed: username already taken");
-                return nullUser; 
-            }       
-        } else {
-            return nullUser;
+                System.out.println("Registration was successful. Welcome " + username);
+            } 
         }
+        return returnUser;
     }
 
 
     //A method used to connect into one of the users in the userList, if the connection is successful it returns the user with the given credentials, if not it returns the nullUser in line 11
     public static User logIn(String username, String password) {
-        
-        User returnUser = nullUser; //the User object to be returned by the method
-        if (username != null && password != null) {     
-            for (User i  : UserList) {
-                if (i.username != null) {
-                    if (i.username.equals(username)) { //checking if the username exists
-                        if (i.password.equals(password)) { //If the username does exist, checking the password
-                            System.out.println("Succesful connection! Welcome " + username);
-                            returnUser = i; //Returns the User object
-                            break; 
+        User returnUser = nullUser;
+        if (username.equals("") || password.equals("")) {
+            System.out.println("Please enter valid credentials");
+        } else {
+            boolean found = false; //Boolean variable used to check the existence of the username
+            for (User tempUser : UserList) { //Getting the credentials from every User in the UserList
+                if (tempUser.username.equals("")) { 
+                    //If the username is null that means that tempUser is nullUser and in this iteration nothing should happen
+                } else {
+                    if (tempUser.username.equals(username)) { //If one user has the same username as the one from the inputs
+                        if (tempUser.password.equals(password)) {
+                            found = true; //The boolean variable becomes true showing that we found a user with the same username
+                            System.out.println("Connection was successful. Welcome " + username);
+                            returnUser = tempUser;
+                            break; //Break from the loop, no need to check any further
                         } else {
-                            System.out.println("Wrong password, please try again");
-                            returnUser = nullUser; //Returns the null User, showing that the connection failed
+                            System.out.println("Wrong password. Please try again");
+                            found = true;
+                            break;
                         }
                     } 
                 }
             }
-            return returnUser;
-        } else {
-            return nullUser;
+            if (!found) {
+                System.out.println("The username does not exist. Please try again");
+            }
         }
+        return returnUser;
     }
     //Method used to change the username
     protected void SetUsername(String newUsername) {

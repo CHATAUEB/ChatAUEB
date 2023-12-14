@@ -61,7 +61,7 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Sign Up button pressed");
-                createCredentialsDialog(1);
+                createCredentialsDialog(1); //calls a dialog used to verify credentials, the number signifies the action the method createCredentialsDialog should take, 1 is for signUp, 2 is for logIn
             }
         });
 
@@ -69,21 +69,13 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Log In button pressed");
-                createCredentialsDialog(2);
-            }
-        });
-
-        changePasswordButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Change Password button pressed");
-                createCredentialsDialog(3);
+                createCredentialsDialog(2); //calls a dialog used to verify credentials
             }
         });
     }
 
     public static void createCredentialsDialog(int action) {
-        
+        //Creates the dialog used for credentials verification
         JDialog credentials = new JDialog();
         credentials.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         credentials.setSize(500, 500);
@@ -91,6 +83,7 @@ public class Gui {
         credentials.setVisible(true);
         credentials.setLayout(null);
 
+        //Panel containing the label and textfield for the username
         JPanel userPanel = new JPanel();
         userPanel.setBounds(200, 170, 100, 40);
 
@@ -127,29 +120,31 @@ public class Gui {
         enter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = userText.getText();
+                String username = userText.getText(); //When the enter button is pressed the credentials entered by the user are retrieved 
                 String password = passText.getText();
                 User user;
                 switch (action) {
-                    case 1 :
-                        user = User.signUp(username, password);
-                        if (user != User.nullUser) {
-                            //openMainFrame(user);
-                            credentials.dispose();
+                    case 1 : //The dialog was called from the signUp button
+                        user = User.signUp(username, password); //Creating a User Object using the method signUp ()
+                        if (!user.equals(User.nullUser)) { //If the registration was successful
+                            //openMainFrame(user); //Open the main frame from which the user can answer the questionnaire
+                            credentials.dispose(); //Close the credentials dialog
                             break;
-                        } else {
-                            credentials.dispose();
-                            createCredentialsDialog(1);
+                        } else { //The registration was not successful
+                            credentials.dispose(); //Close the credentials dialog
+                            createCredentialsDialog(1); //Open the credentials dialog again
                             break;
                         }
                     case 2 :
                         user = User.logIn(username, password);
-                        if (user != User.nullUser) {
+                        if (!user.equals(User.nullUser)) {
                             //openMainFrame(user);
                             credentials.dispose();
+                            break;
                         } else {
                             credentials.dispose();
                             createCredentialsDialog(2);
+                            break;
                         }
                 }
             }
