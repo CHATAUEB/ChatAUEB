@@ -1,3 +1,5 @@
+package example;
+
 import java.util.Scanner;
 
 public class UserMenu {
@@ -40,7 +42,7 @@ public class UserMenu {
         String password = scanner.nextLine();
       
 
-        User user = User.connect(username, password);
+        User user = User.logIn(username, password);
     }
 
     private static void signUpUser() {
@@ -59,7 +61,7 @@ public class UserMenu {
         System.out.println("Enter current password: ");
         String password = scanner.nextLine();
 
-        User user = User.connect(username, password);
+        User user = User.logIn(username, password);
 
         if (user != User.nullUser) {
             System.out.println("Enter new password: ");
