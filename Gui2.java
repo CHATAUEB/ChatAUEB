@@ -1,4 +1,5 @@
-package example;
+//Den anoigei neo parathiro kathe fora pou patas Login h Singup. Epishs exeis thn dunatotita na pas pisw sto aueb menu
+// Den mporeis na allajeis password
 
 import javax.swing.*;
 import java.awt.*;
