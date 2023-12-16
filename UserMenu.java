@@ -1,4 +1,4 @@
-package example;
+//Gia na leitoyrgisei h User me thn UserMenu theloyn na einai sto idio paketo
 
 import java.util.Scanner;
 
