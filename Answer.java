@@ -16,8 +16,13 @@ public class Answer {
         this.answer2 = answer2;
     }
 
-    Answer[] a = new Answer[size];
-    public void insertAnswers(int number, String answer) {
+    Answer[] a = new Answer[size]; //Na uparxei if statement me synthiki poy tha elegxei to type tou question kai tha kalei thn antistoixh methodo
+    public void insertNominalAnswers(int number, String answer) {
+        Answer ans = new Answer(answer);
+        a[number] = ans;
+    }
+
+    public void insertOrdinalAnswers(int number, int answer) {
         Answer ans = new Answer(answer);
         a[number] = ans;
     }
