@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,7 +44,6 @@ public class Gui {
     }
 
     public static void createButtons() {
-        JLabel label = new JLabel("Welcome to ChatAUEB.");
         int labelHeight = 100; // Height of the label
 
         // Add buttons for sign up, log in, and change password
@@ -113,8 +111,6 @@ public class Gui {
         credentials.add(passText);
 
         credentials.add(passPanel);
-
- 
         
         //Button used to get credentials and login or sign up
         JButton enter = new JButton("Enter");
@@ -122,13 +118,6 @@ public class Gui {
                
         credentials.add(enter); 
 
-        //Button used to go back to the entry frame
-        JButton backButton = new JButton("Back");
-        backButton.setBounds(40, 200, 70, 30);
-        
-        credentials.add(backButton);
-
-        
         enter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -165,6 +154,12 @@ public class Gui {
 
         });
 
+        //Button used to go back to the entry frame
+        JButton backButton = new JButton("Back");
+        backButton.setBounds(40, 200, 70, 30);
+        
+        credentials.add(backButton);
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -180,7 +175,32 @@ public class Gui {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(1000, 1000);
 
+        JMenuBar menuBar = createMenuBar(user, mainFrame);
+        mainFrame.setJMenuBar(menuBar);
+
+        mainFrame.setVisible(true);
+        
+    }
+
+    public static JMenuBar createMenuBar(User user, JFrame mainFrame) {
         JMenuBar menuBar = new JMenuBar();
+
+        JMenu questionnaire = createQuestionnaireMenu();
+        menuBar.add(questionnaire);
+
+        JMenu chat = createChatMenu();
+        menuBar.add(chat);
+
+        JMenu aboutUs = createAboutUsMenu();
+        menuBar.add(aboutUs);
+
+        JMenu userMenu = createUserMenu(user, mainFrame);
+        menuBar.add(userMenu);
+
+        return menuBar;
+    }
+
+    public static JMenu createQuestionnaireMenu() {
         JMenu questionnaire = new JMenu("Questionnaire");
 
         JMenuItem answer = new JMenuItem("Fill in questionnaire");
@@ -205,15 +225,98 @@ public class Gui {
         questionnaire.add(answer);
         questionnaire.add(view);
 
-        menuBar.add(questionnaire);
-
-        mainFrame.setJMenuBar(menuBar);
-
-        mainFrame.setLayout(new BorderLayout());
-        mainFrame.setVisible(true);
-
+        return questionnaire;
     }
 
+    public static JMenu createChatMenu() {
+        JMenu chat = new JMenu("Chat with ChatAUEB");
+
+        JMenuItem prompt = new JMenuItem("Direct Prompt");
+
+        prompt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //openPromptFrame()
+                System.out.println("Chat button pressed");
+            }
+        });
+
+        chat.add(prompt);
+
+        return chat;
+    }
+
+    public static JMenu createAboutUsMenu() {
+        JMenu aboutUs = new JMenu("About Us");
+
+        JMenuItem purpose = new JMenuItem("Purpose");
+
+        purpose.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //openPurposeFrame
+                System.out.println("Purpose button pressed");
+            }
+        });
+
+        aboutUs.add(purpose);
+
+        JMenuItem members = new JMenuItem("Our Team");
+
+        members.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //openMembersFrame
+                System.out.println("Members button pressed");
+            }
+        });
+
+        aboutUs.add(members);
+
+        return aboutUs;
+    }
+
+    public static JMenu createUserMenu(User user, JFrame mainFrame) {
+        JMenu userMenu = new JMenu(user.username);
+
+        JMenuItem changeUsername = new JMenuItem("Change username");
+
+        changeUsername.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //openChangeFrame(action 1)
+                System.out.println("Change Username button pressed");
+            }
+        });
+
+        userMenu.add(changeUsername);
+
+        JMenuItem changePassword = new JMenuItem("Change password");
+
+        changeUsername.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //openChangeFrame(action 2)
+                System.out.println("Change Password button pressed");
+            }
+        });
+
+        userMenu.add(changePassword);
+
+        JMenuItem logOut = new JMenuItem("Log Out");
+
+        logOut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainFrame.dispose();
+                System.out.println("Log Out button pressed");
+            }
+        });
+
+        userMenu.add(logOut);
+
+        return userMenu;
+    }
     public static void main(String[] args) {
         openFrame();
     }
