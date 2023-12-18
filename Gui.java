@@ -1,3 +1,4 @@
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -173,33 +174,39 @@ public class Gui {
     public static void openMainFrame(User user) {
         JFrame mainFrame = new JFrame("ChatAUEB - Menu");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(1000, 1000);
+        mainFrame.setSize(500, 500);
 
         JMenuBar menuBar = createMenuBar(user, mainFrame);
         mainFrame.setJMenuBar(menuBar);
 
-        mainFrame.setVisible(true);
-        
+        mainFrame.setVisible(true);        
     }
-
+    
+    //Method used to create all the components included in the MenuBar
     public static JMenuBar createMenuBar(User user, JFrame mainFrame) {
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu questionnaire = createQuestionnaireMenu();
+        JMenu questionnaire = createQuestionnaireMenu(); //line 209
         menuBar.add(questionnaire);
 
-        JMenu chat = createChatMenu();
+        JMenu chat = createChatMenu(); //line 238
         menuBar.add(chat);
 
-        JMenu aboutUs = createAboutUsMenu();
+        JMenu aboutUs = createAboutUsMenu(); //line 257
         menuBar.add(aboutUs);
 
-        JMenu userMenu = createUserMenu(user, mainFrame);
+        JMenu help = createHelpMenu(); //line 288
+        menuBar.add(help);
+ 
+        menuBar.add(Box.createHorizontalGlue()); //used to send the user menu to the far right of the screen
+
+        JMenu userMenu = createUserMenu(user, mainFrame); //line 331
         menuBar.add(userMenu);
 
         return menuBar;
     }
-
+    
+    //Method used to create the first menu in the main frame. It includes options to fill in the questionnaire and to view the user's answer already given
     public static JMenu createQuestionnaireMenu() {
         JMenu questionnaire = new JMenu("Questionnaire");
 
@@ -228,6 +235,7 @@ public class Gui {
         return questionnaire;
     }
 
+    //Method used to create the second menu in the main frame. It includes an option to send a message to ChatGPT directly
     public static JMenu createChatMenu() {
         JMenu chat = new JMenu("Chat with ChatAUEB");
 
@@ -246,6 +254,7 @@ public class Gui {
         return chat;
     }
 
+    //Method used to create the third menu in the main frame. It includes options to read about our purpose and about our members
     public static JMenu createAboutUsMenu() {
         JMenu aboutUs = new JMenu("About Us");
 
@@ -276,6 +285,50 @@ public class Gui {
         return aboutUs;
     }
 
+    //Method used to create the fourth menu in the main frame. It includes options to help the user understand the usage of the questionnaire and the direct prompt as well as look at some frequently asked questions
+    public static JMenu createHelpMenu() {
+        JMenu help = new JMenu("Help");
+
+        JMenuItem questionnaire = new JMenuItem("Questionnaire");
+
+        questionnaire.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //openHelpFrame(action 1)
+                System.out.println("Questionnaire Help button pressed");
+            }
+        });
+
+        help.add(questionnaire);
+
+        JMenuItem prompt = new JMenuItem("Direct Prompt");
+
+        prompt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //openHelpFrame(action 2)
+                System.out.println("Chat Help button pressed");
+            }
+        });
+
+        help.add(prompt);
+
+        JMenuItem faq = new JMenuItem("FAQ's");
+
+        faq.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //openHelpFrame(action 3)
+                System.out.println("FAQ button pressed");
+            }
+        });
+
+        help.add(faq);
+
+        return help;
+    }
+
+    //Method used to create the fifth and final menu in the main frame. It includes options to change a user's credentials and log out from the app
     public static JMenu createUserMenu(User user, JFrame mainFrame) {
         JMenu userMenu = new JMenu(user.username);
 
@@ -309,6 +362,7 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainFrame.dispose();
+                openFrame();
                 System.out.println("Log Out button pressed");
             }
         });
@@ -317,6 +371,8 @@ public class Gui {
 
         return userMenu;
     }
+
+    
     public static void main(String[] args) {
         openFrame();
     }
