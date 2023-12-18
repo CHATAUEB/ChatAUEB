@@ -22,20 +22,22 @@ public class DatabaseConnection {
 
             
             ResultSet resultSet1 = st.executeQuery("select username from users");
-            ResultSet resultSet2 = st.executeQuery("select password from users");\
-            ResultSet resultSet3 = st.executeQuery("select answers from answers");
-            
+            ResultSet resultSet2 = st.executeQuery("select password from users");
+            ResultSet resultSet3 = st.executeQuery("select username from answers");
+            ResultSet resultSet4 = st.executeQuery("select answers from answers");
 
             while (resultSet1.next() && resultSet2.next()) {
                 String[] ansers = new String[30];
                 String uname = resultSet1.getString("username");
                 String upass = resultSet2.getString("password");
-                while (resultSet3.next() && uname == resultSet1()){ // mporei na min doulevei o elegxos ginetai h antistixisi username kai answers pinaka diaforetikos 
-                    int i = 0;
-                    ansers[i]= resultSet3.getString("answers");
+                int i = 0;
+                while (resultSet3.next() && uname == resultSet3()){ // mporei na min doulevei o elegxos ginetai h antistixisi username kai answers pinaka diaforetikos 
+                    
+                    ansers[i]= resultSet4.getString("answers");
                     i++;
                 }
-                User user = new User(uname,upass,ansers);
+                User user = new User(uname,upass);// o parakatw constructor prepei na kataskevastei 
+                answers answer = new answers(uname,ansers[],messages);//messages tominima tou xristi sto ai ???
                 //add sto araylist prepei na ginei
             }
             
