@@ -12,6 +12,7 @@ public class DatabaseConnection {
         String username = "your_username";
         String password = "your_password";
         List<User> userList = new ArrayList<>();
+        List<Answers> answerList = new ArrayList<>();
 
         try {
             // Establish a connection
@@ -37,7 +38,9 @@ public class DatabaseConnection {
                     i++;
                 }
                 User user = new User(uname,upass);// o parakatw constructor prepei na kataskevastei 
+                userList.add(user);
                 answers answer = new answers(uname,ansers[],messages);//messages tominima tou xristi sto ai ???
+                answerList.add(anwer);
                 //add sto araylist prepei na ginei
             }
             
