@@ -17,22 +17,22 @@ public class QueryBuilder {
 
         StringBuilder builder = null;
         builder.append(TEXT);
-        builder.append(questions[0]);
-        builder.append(answer[0]);
-        builder.append(questions[1]);
-        builder.append(answer[1]);
-        builder.append(questions[2]);
-        builder.append(answer[2]);
-        builder.append(questions[3]);
-        builder.append(answer[3]);
-        builder.append(questions[4]);
-        builder.append(answer[4]);
-        builder.append(questions[5]);
-        builder.append(answer[5]);
-        builder.append(questions[6]);
-        builder.append(answer[6]);
-        builder.append(questions[7]);
-        builder.append(answer[7]);
+        builder.append(questions[0] + ": ");
+        builder.append(answer[0] + "\n");
+        builder.append(questions[1] + ": ");
+        builder.append(answer[1] + "\n");
+        builder.append(questions[2] + ": ");
+        builder.append(answer[2] + "\n");
+        builder.append(questions[3] + ": ");
+        builder.append(answer[3] + "\n");
+        builder.append(questions[4] + ": ");
+        builder.append(answer[4] + "\n");
+        builder.append(questions[5] + ": ");
+        builder.append(answer[5] + "\n");
+        builder.append(questions[6] + ": ");
+        builder.append(answer[6] + "\n");
+        builder.append(questions[7] + ": ");
+        builder.append(answer[7] + "\n");
 
         if (message != null) {
             builder.append(message);
