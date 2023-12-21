@@ -1,5 +1,6 @@
 public class QueryBuilder {
     
+    // Define a constant string for the university information
     final static String TEXT = "Σε ενα πανεπιστημιο υπαρχουν 8 τμηματα: \r\n" + 
                         "1) διεθνων ευρωπαικων και οικονομικων σπουδων, \r\n" +
                         "2) οικονομικων επιστημων, \r\n" +
@@ -12,32 +13,26 @@ public class QueryBuilder {
                         "Ενας μαθητης θελει να σπουδασει σε αυτο το πανεπιστημιο, αλλα δεν ξερει ποιο τμημα να διαλεξει.\r\n" +
                         "Ο μαθητης απαντησε στο παρακατω ερωτηματολογιο οσων αφορα στις προτιμησεις του: \r\n";
 
+    // Constructor method that builds the query
+    public String QueryBuilder(String questions[], String answer[], String message) {
+        // Initialize a StringBuilder to construct the final message
+        StringBuilder builder = new StringBuilder();
 
-    public String QueryBuilder(questions[], answer[], message) {
-
-        StringBuilder builder = null;
+        // Append the university information
         builder.append(TEXT);
-        builder.append(questions[0] + ": ");
-        builder.append(answer[0] + "\n");
-        builder.append(questions[1] + ": ");
-        builder.append(answer[1] + "\n");
-        builder.append(questions[2] + ": ");
-        builder.append(answer[2] + "\n");
-        builder.append(questions[3] + ": ");
-        builder.append(answer[3] + "\n");
-        builder.append(questions[4] + ": ");
-        builder.append(answer[4] + "\n");
-        builder.append(questions[5] + ": ");
-        builder.append(answer[5] + "\n");
-        builder.append(questions[6] + ": ");
-        builder.append(answer[6] + "\n");
-        builder.append(questions[7] + ": ");
-        builder.append(answer[7] + "\n");
 
+        // Append each question and its corresponding answer
+        for (int i = 0; i < questions.length; i++) {
+            builder.append(questions[i] + ": ");
+            builder.append(answer[i] + "\n");
+        }
+
+        // Append an additional message if provided
         if (message != null) {
             builder.append(message);
         }
 
+        // Convert the StringBuilder to a String and return it
         String toChat = builder.toString();
         return toChat;
     }
