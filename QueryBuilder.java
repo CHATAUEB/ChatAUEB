@@ -14,7 +14,8 @@ public class QueryBuilder {
                         "Ο μαθητης απαντησε στο παρακατω ερωτηματολογιο οσων αφορα στις προτιμησεις του: \r\n";
 
     // Constructor method that builds the query
-    public String QueryBuilder(String questions[], String answer[], String message) {
+    public String QueryBuilder(questions[], answer[], message) {
+        
         // Initialize a StringBuilder to construct the final message
         StringBuilder builder = new StringBuilder();
 
@@ -31,7 +32,7 @@ public class QueryBuilder {
         if (message != null) {
             builder.append(message);
         }
-
+        
         // Convert the StringBuilder to a String and return it
         String toChat = builder.toString();
         return toChat;
