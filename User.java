@@ -1,14 +1,14 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class User{
-    private final int y = 30; //array size depending on questionnaire size, 30 for testing
+public class User {
+    public static final int answersLength = 18; //array size depending on questionnaire size, 30 for testing
 
     protected String username;
     
     private String password;
     
-    private String[] answers = new String[y];
+    protected String[] answers = new String[answersLength];
     
     protected static ArrayList<User> UserList = new ArrayList<User>(); //list containing all created users
 
