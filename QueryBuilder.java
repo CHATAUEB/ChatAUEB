@@ -12,7 +12,8 @@ public class QueryBuilder {
                         "8) στατιστικης. \r\n" +
                         "Ενας μαθητης θελει να σπουδασει σε αυτο το πανεπιστημιο, αλλα δεν ξερει ποιο τμημα να διαλεξει.\r\n" +
                         "Ο μαθητης απαντησε στο παρακατω ερωτηματολογιο οσων αφορα στις προτιμησεις του: \r\n";
-    
+
+    //Define a default question for Chatgpt: choose a department based on answers
     final String defaultQuestion = "Ποιο τμήμα να διαλέξει ο χρήστης;"
 
     // Constructor method that builds the query
@@ -30,6 +31,7 @@ public class QueryBuilder {
             builder.append(answer[i] + "\n");
         }
 
+        // Append the default question
         builder.append(defaultQuestion);
         
         // Append an additional message if provided
