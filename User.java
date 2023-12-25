@@ -13,6 +13,7 @@ public class User {
     protected static ArrayList<User> UserList = new ArrayList<User>(); //list containing all created users
 
     static User nullUser = new User("", ""); //null User used to show that the connection failed
+    static User guestUser = new User("Guest", "1234");
 
     //A constructor for users with a username and a password.
     public User(String username, String password) {
@@ -120,5 +121,11 @@ public class User {
         }
 
         lineReader.close();
+    }
+
+    protected void clearAnswers() {
+        for (int i = 0; i < User.answersLength; i++) {
+            answers[i] = "";
+        }
     }
 }

@@ -10,14 +10,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JRadioButton;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -63,12 +62,16 @@ public class Gui {
         loginButton.setBounds(200, labelHeight + 40, 100, 30); // Centered vertically based on label height
         frame.add(loginButton);
 
+        JButton guestButton = new JButton("Enter as a guest");
+        guestButton.setBounds(175, labelHeight + 80, 150, 30);
+        frame.add(guestButton);
+
         // Add action listeners for the buttons
         signUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Sign Up button pressed");
-                createCredentialsDialog(1); //calls a dialog used to verify credentials, the number signifies the action the method createCredentialsDialog should take, 1 is for signUp, 2 is for logIn
+                createCredentialsDialog(1, frame); //calls a dialog used to verify credentials, the number signifies the action the method createCredentialsDialog should take, 1 is for signUp, 2 is for logIn
             }
         });
 
@@ -76,12 +79,24 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Log In button pressed");
-                createCredentialsDialog(2); //calls a dialog used to verify credentials
+                createCredentialsDialog(2, frame); //calls a dialog used to verify credentials
             }
         });
+
+        guestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Guest button pressed");
+                User user = User.guestUser;
+                user.clearAnswers();
+                openMainFrame(user, frame);
+            }
+        });
+
+
     }
 
-    public static void createCredentialsDialog(int action) {
+    public static void createCredentialsDialog(int action, JFrame calledByFrame) {
         //Creates the dialog used for credentials verification
         JDialog credentials = new JDialog();
         credentials.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -136,25 +151,25 @@ public class Gui {
                     case 1 : //The dialog was called from the signUp button
                         user = User.signUp(username, password); //Creating a User Object using the method signUp()
                         if (!user.equals(User.nullUser)) { //If the registration was successful
-                            openMainFrame(user); //Open the main frame with the User Object
+                            openMainFrame(user, calledByFrame); //Open the main frame with the User Object
                             credentials.dispose(); //Close the credentials dialog
                             frame.dispose(); //Close the entry frame
                             break;
                         } else { //The registration was not successful
                             credentials.dispose(); //Close the credentials dialog
-                            createCredentialsDialog(1); //Open the credentials dialog again
+                            createCredentialsDialog(1, calledByFrame); //Open the credentials dialog again
                             break;
                         }
                     case 2 : //The dialog was called from the logIn button
                         user = User.logIn(username, password); //Creating a User Object using the method logIn()
                         if (!user.equals(User.nullUser)) { //If the connection was successful
-                            openMainFrame(user); //Open the main frame with the User Object
+                            openMainFrame(user, calledByFrame); //Open the main frame with the User Object
                             credentials.dispose(); //Close the credentials dialog
                             frame.dispose(); //Close the entry frame
                             break;
                         } else { //If the connection was not successful
                             credentials.dispose(); //Close the credentials dialog
-                            createCredentialsDialog(2); //Open the credentials dialog again
+                            createCredentialsDialog(2, calledByFrame); //Open the credentials dialog again
                             break;
                         }
                 }
@@ -178,10 +193,11 @@ public class Gui {
     }
 
     //The main frame for the application. It contains a menu bar with all the options for the user. 
-    public static void openMainFrame(User user) {
+    public static void openMainFrame(User user, JFrame calledByFrame) {
         JFrame mainFrame = new JFrame("ChatAUEB - Menu");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(500, 500);
+        calledByFrame.setVisible(false);
 
         JMenuBar menuBar = createMenuBar(user, mainFrame);
         mainFrame.setJMenuBar(menuBar);
@@ -353,7 +369,7 @@ public class Gui {
 
         JMenuItem changePassword = new JMenuItem("Change password");
 
-        changeUsername.addActionListener(new ActionListener() {
+        changePassword.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //openChangeFrame(action 2)
@@ -383,14 +399,14 @@ public class Gui {
     public static void openQuestionnaireFrame(User user, int action, JFrame mainFrame) {
         JFrame questionnaireFrame = new JFrame("CHATAUEB - Questionnaire");
         questionnaireFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        questionnaireFrame.setSize(2045, 2045);
+        questionnaireFrame.setSize(1024, 1024);
         questionnaireFrame.setLayout(new BorderLayout()); 
 
         questionnaireFrame.setVisible(true);
         mainFrame.setVisible(false);
         
-        JPanel questionnairePanel = new JPanel(null);
-        questionnairePanel.setBounds(0, 20, 2048, 5100);
+        JPanel questionnairePanel = new JPanel(new GridLayout(0,1, 20, 20));
+        questionnairePanel.setBounds(40, 20, 2048, 5100);
 
         //Creating a similiar menu to the one in the main frame
         JMenuBar menuBar = createMenuBar(user, questionnaireFrame);
@@ -412,32 +428,45 @@ public class Gui {
         //while simultaneously sorting them according to the question to which they belong to
         JRadioButton[][] radioButtons = new JRadioButton[Questions.questionsLength][Questions.choices + 1];
         radioButtons = initializeRadioButtons(radioButtons); //Line 506
-        
-        //The dimensions of the bounds for all the questions and the choices
-        int x = 40; 
-        int y = 10;
-        int width = 2000;
-        int height = 40;
 
         switch (action) {
             case 1 : 
                 for (int i = 0; i < Questions.questionsLength; i++) {
-                    questions[i].setBounds(x, y, width, height);
                     questionnairePanel.add(questions[i]);
                     buttonGroups[i] = new ButtonGroup();
-                    y += 40;
 
                     for (int j = 1; j < Questions.choices + 1; j++) {
-                        if (!(Questions.fullQuestions[i][j].equals("")))
+                        if (!(Questions.fullQuestions[i][j].equals(""))) {
                             radioButtons[i][j] = new JRadioButton(Questions.fullQuestions[i][j]);
-                            radioButtons[i][j].setBounds(x, y, width, height);
                             buttonGroups[i].add(radioButtons[i][j]);
                             questionnairePanel.add(radioButtons[i][j]);
-                            y += 40;
+                        }
+                    }
+                }
+                break;
+
+            case 2 :
+                for (int i = 0; i < Questions.questionsLength; i++) {
+                    questionnairePanel.add(questions[i]);
+                    buttonGroups[i] = new ButtonGroup();
+
+                    for (int j = 1; j < Questions.choices + 1; j++) {
+                        if (!(Questions.fullQuestions[i][j].equals(""))) {
+                            radioButtons[i][j] = new JRadioButton(Questions.fullQuestions[i][j]);
+                            if (radioButtons[i][j].getText().equals(user.answers[i])) {
+                                radioButtons[i][j].setSelected(true);
+                            }
+                            buttonGroups[i].add(radioButtons[i][j]);
+                            questionnairePanel.add(radioButtons[i][j]);
+                        }
                     }
 
                 }
+                break;
+            }
 
+                JPanel buttonsPanel = new JPanel(new GridLayout(1,2,20,0));
+        
                 final JRadioButton[][] tempRadioButtons = radioButtons;
 
                 JButton enter = new JButton("Enter");
@@ -445,28 +474,13 @@ public class Gui {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         processAnswers(user, tempRadioButtons); //Line 507
+                        final String chatGPTAnswer = QueryBuilder.query(questionsOnly, user.answers, QueryBuilder.defaultQuestion);
                         questionnaireFrame.dispose();
                         mainFrame.setVisible(true);
                     }
                 });
 
-                questionnairePanel.add(enter, BorderLayout.SOUTH);
-                break;
-
-            case 2 :
-                JLabel[] answers = createTextAreas(user.answers);
-                for (int i = 0; i < User.answersLength; i++) {
-                    questions[i].setBounds(x, y, width, height);
-                    questionnairePanel.add(questions[i]);
-                    y += y;
-
-                    answers[i].setBounds(x, y, width, height);
-                    questionnairePanel.add(answers[i]);
-                    y += y;
-                }
-
                 JButton back = new JButton("Back");
-
                 back.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -475,13 +489,12 @@ public class Gui {
                     }
                 });
 
-                questionnairePanel.add(back, BorderLayout.SOUTH);
-                break;
-        }
+                buttonsPanel.add(back);
+                buttonsPanel.add(enter);
+                questionnairePanel.add(buttonsPanel, BorderLayout.SOUTH);
         
         //Adding a scroll bar
         JScrollPane scrollPane = new JScrollPane(questionnairePanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.setPreferredSize(new Dimension(2048,2048));
 
         questionnaireFrame.add(scrollPane, BorderLayout.CENTER);
@@ -545,12 +558,15 @@ public class Gui {
         JButton enter = new JButton("Enter");
         enter.setBounds(400, 250, 70, 20);
         promptFrame.add(enter);
+
+        Questions.createQuestions();
+        String[] questions = Questions.createQuestionsOnly(Questions.fullQuestions);
         
         enter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String prompt = promptField.getText();
-                //QueryBuilder.build(questions, answers, prompt);
+                final String chatGPTAnswer = QueryBuilder.query(questions, user.answers, prompt);               
                 promptFrame.dispose();
                 mainFrame.setVisible(true);
             }
@@ -563,7 +579,7 @@ public class Gui {
         view.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //openQuestionnaireFrame(action 2)
+                openQuestionnaireFrame(user, 2, promptFrame);
                 System.out.println("View button pressed");
             }
         });
