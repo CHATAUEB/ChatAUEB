@@ -1,4 +1,5 @@
 import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -8,8 +9,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JRadioButton;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -186,10 +193,10 @@ public class Gui {
     public static JMenuBar createMenuBar(User user, JFrame mainFrame) {
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu questionnaire = createQuestionnaireMenu(); //line 209
+        JMenu questionnaire = createQuestionnaireMenu(user, mainFrame); //line 209
         menuBar.add(questionnaire);
 
-        JMenu chat = createChatMenu(); //line 238
+        JMenu chat = createChatMenu(user, mainFrame); //line 238
         menuBar.add(chat);
 
         JMenu aboutUs = createAboutUsMenu(); //line 257
@@ -207,7 +214,7 @@ public class Gui {
     }
     
     //Method used to create the first menu in the main frame. It includes options to fill in the questionnaire and to view the user's answer already given
-    public static JMenu createQuestionnaireMenu() {
+    public static JMenu createQuestionnaireMenu(User user, JFrame mainFrame) {
         JMenu questionnaire = new JMenu("Questionnaire");
 
         JMenuItem answer = new JMenuItem("Fill in questionnaire");
@@ -216,7 +223,7 @@ public class Gui {
         answer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //openQuestionnaireFrame(action 1)
+                openQuestionnaireFrame(user, 1, mainFrame);
                 System.out.println("Fill in button pressed");
             }
         });
@@ -224,7 +231,7 @@ public class Gui {
         view.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //openQuestionnaireFrame(action 2)
+                openQuestionnaireFrame(user, 2, mainFrame);
                 System.out.println("View button pressed");
             }
         });
@@ -236,7 +243,7 @@ public class Gui {
     }
 
     //Method used to create the second menu in the main frame. It includes an option to send a message to ChatGPT directly
-    public static JMenu createChatMenu() {
+    public static JMenu createChatMenu(User user, JFrame mainFrame) {
         JMenu chat = new JMenu("Chat with ChatAUEB");
 
         JMenuItem prompt = new JMenuItem("Direct Prompt");
@@ -244,7 +251,7 @@ public class Gui {
         prompt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //openPromptFrame()
+                openPromptFrame(user, mainFrame);
                 System.out.println("Chat button pressed");
             }
         });
@@ -372,7 +379,196 @@ public class Gui {
         return userMenu;
     }
 
-    
+    //Questionnaire frame used to answer the questionnaire (action = 1) or view the user's previous answers (action = 2)
+    public static void openQuestionnaireFrame(User user, int action, JFrame mainFrame) {
+        JFrame questionnaireFrame = new JFrame("CHATAUEB - Questionnaire");
+        questionnaireFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        questionnaireFrame.setSize(2045, 2045);
+        questionnaireFrame.setLayout(new BorderLayout()); 
+
+        questionnaireFrame.setVisible(true);
+        mainFrame.setVisible(false);
+        
+        JPanel questionnairePanel = new JPanel(null);
+        questionnairePanel.setBounds(0, 20, 2048, 5100);
+
+        //Creating a similiar menu to the one in the main frame
+        JMenuBar menuBar = createMenuBar(user, questionnaireFrame);
+        questionnaireFrame.add(menuBar, BorderLayout.NORTH);
+
+        //Creating the two dimensional array containing the questions and choices in the class Questions
+        Questions.createQuestions();
+        
+        //Creating a one dimensional array containing the questions only
+        String[] questionsOnly = Questions.createQuestionsOnly(Questions.fullQuestions);
+
+        //Creating a JTextArea array including only the main questions without the choices
+        JLabel[] questions = createTextAreas(questionsOnly);
+
+        //Creating a ButtonGroup array used to contain the choices in the form of JRadioButtons
+        ButtonGroup[] buttonGroups = new ButtonGroup[Questions.questionsLength];
+
+        //Creating a two dimensional JRadioButton array in order to store all of the choices a user has,
+        //while simultaneously sorting them according to the question to which they belong to
+        JRadioButton[][] radioButtons = new JRadioButton[Questions.questionsLength][Questions.choices + 1];
+        radioButtons = initializeRadioButtons(radioButtons); //Line 506
+        
+        //The dimensions of the bounds for all the questions and the choices
+        int x = 40; 
+        int y = 10;
+        int width = 2000;
+        int height = 40;
+
+        switch (action) {
+            case 1 : 
+                for (int i = 0; i < Questions.questionsLength; i++) {
+                    questions[i].setBounds(x, y, width, height);
+                    questionnairePanel.add(questions[i]);
+                    buttonGroups[i] = new ButtonGroup();
+                    y += 40;
+
+                    for (int j = 1; j < Questions.choices + 1; j++) {
+                        if (!(Questions.fullQuestions[i][j].equals("")))
+                            radioButtons[i][j] = new JRadioButton(Questions.fullQuestions[i][j]);
+                            radioButtons[i][j].setBounds(x, y, width, height);
+                            buttonGroups[i].add(radioButtons[i][j]);
+                            questionnairePanel.add(radioButtons[i][j]);
+                            y += 40;
+                    }
+
+                }
+
+                final JRadioButton[][] tempRadioButtons = radioButtons;
+
+                JButton enter = new JButton("Enter");
+                enter.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        processAnswers(user, tempRadioButtons); //Line 507
+                        questionnaireFrame.dispose();
+                        mainFrame.setVisible(true);
+                    }
+                });
+
+                questionnairePanel.add(enter, BorderLayout.SOUTH);
+                break;
+
+            case 2 :
+                JLabel[] answers = createTextAreas(user.answers);
+                for (int i = 0; i < User.answersLength; i++) {
+                    questions[i].setBounds(x, y, width, height);
+                    questionnairePanel.add(questions[i]);
+                    y += y;
+
+                    answers[i].setBounds(x, y, width, height);
+                    questionnairePanel.add(answers[i]);
+                    y += y;
+                }
+
+                JButton back = new JButton("Back");
+
+                back.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        questionnaireFrame.dispose();
+                        mainFrame.setVisible(true);
+                    }
+                });
+
+                questionnairePanel.add(back, BorderLayout.SOUTH);
+                break;
+        }
+        
+        //Adding a scroll bar
+        JScrollPane scrollPane = new JScrollPane(questionnairePanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
+        scrollPane.setPreferredSize(new Dimension(2048,2048));
+
+        questionnaireFrame.add(scrollPane, BorderLayout.CENTER);
+    }
+
+    public static JLabel[] createTextAreas(String[] array) {
+        JLabel[] ret = new JLabel[Questions.questionsLength];
+        for (int i = 0; i < Questions.questionsLength; i++) {
+            ret[i] = new JLabel(i+1 + ") " + array[i]);
+        }
+        return ret;
+    }
+
+    public static JRadioButton[][] initializeRadioButtons(JRadioButton[][] radioButtons) {
+        JRadioButton[][] ret = new JRadioButton[Questions.questionsLength][Questions.choices + 1];
+        for (int i = 0; i < Questions.questionsLength ; i ++) {
+            for (int j = 0; j < Questions.choices + 1; j++) {
+                ret[i][j] = new JRadioButton("", false); 
+            }
+        }
+        return ret;
+    }
+
+    public static void processAnswers(User user, JRadioButton[][] radioButtons) {
+        for (int i = 0; i < Questions.questionsLength; i++) {
+            String answer = "";
+            for (int j = 0; j < Questions.choices + 1; j++) {
+                if(radioButtons[i][j].isSelected()) {
+                    answer = radioButtons[i][j].getText();
+                    break;
+                }
+            }
+            user.answers[i] = answer;
+        }
+    }
+
+    public static void openPromptFrame(User user, JFrame mainFrame) {
+        JFrame promptFrame = new JFrame("CHATAUEB - Direct Prompt");
+        promptFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        promptFrame.setSize(500, 500);
+        promptFrame.setLayout(null); 
+
+        promptFrame.setVisible(true);
+        mainFrame.setVisible(false); 
+        
+        JMenuBar menuBar = createMenuBar(user, mainFrame);
+        promptFrame.add(menuBar);
+        
+        JLabel promptLabel1 = new JLabel("Write down a question you would like to ask ChatGPT based on");
+        promptLabel1.setBounds(50, 100, 400, 20);
+        promptFrame.add(promptLabel1);
+
+        JLabel promptLabel2 = new JLabel("the information you have filled out");
+        promptLabel2.setBounds(50, 120, 400, 20);
+        promptFrame.add(promptLabel2);
+
+        JTextField promptField = new JTextField();
+        promptField.setBounds(50, 160, 400, 40);
+        promptFrame.add(promptField);
+
+        JButton enter = new JButton("Enter");
+        enter.setBounds(400, 250, 70, 20);
+        promptFrame.add(enter);
+        
+        enter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String prompt = promptField.getText();
+                //QueryBuilder.build(questions, answers, prompt);
+                promptFrame.dispose();
+                mainFrame.setVisible(true);
+            }
+        });
+        
+        JButton view = new JButton("View Answers");
+        view.setBounds(50, 250, 120, 20);
+        promptFrame.add(view);
+
+        view.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //openQuestionnaireFrame(action 2)
+                System.out.println("View button pressed");
+            }
+        });
+    }
+
     public static void main(String[] args) {
         openFrame();
     }
