@@ -1,12 +1,13 @@
 import java.util.ArrayList;
-import java.util.Scanner;
+
+import javax.swing.JFrame;
 
 public class User {
     public static final int answersLength = 18; //array size depending on questionnaire size, 30 for testing
 
     protected String username;
     
-    private String password;
+    protected String password;
     
     protected String[] answers = new String[answersLength];
     
@@ -22,10 +23,12 @@ public class User {
         UserList.add(this);
     }
     //Method used to sign up to the database
-    public static User signUp(String username, String password) {
+    public static User signUp(String username, String password, JFrame frame) {
         User returnUser = nullUser; //If the signUp is not successful the method returns the null user
+        Error error;
         if (username.equals("") || password.equals("")) { //Checking if the credentials are not null
-            System.out.println("Please enter valid credentials");
+            error = Error.invalidCredentials;
+            Error.displayError(error, frame);
         } else { //If the credentials are valid we should check if the username is taken
             boolean taken = false; //Boolean variable used to check the availability of the username
             for (User tempUser : UserList) { //Getting the credentials from every User in the UserList
@@ -34,7 +37,8 @@ public class User {
                 } else {
                     if (tempUser.username.equals(username)) { //If one user has the same username as the one from the inputs
                         taken = true; //The boolean variable becomes true showing that we found a user with the same username
-                        System.out.println("Username is taken. Please try again");
+                        error = Error.usernameTaken;
+                        Error.displayError(error, frame);
                         break; //Break from the loop, no need to check any further
                     } else {
                         taken = false;
@@ -43,7 +47,6 @@ public class User {
             }
             if (!taken) { //If there are no matches, the username is available and thus a User objected is created
                 returnUser = new User(username, password);
-                System.out.println("Registration was successful. Welcome " + username);
             } 
         }
         return returnUser;
@@ -51,10 +54,12 @@ public class User {
 
 
     //A method used to connect into one of the users in the userList, if the connection is successful it returns the user with the given credentials, if not it returns the nullUser in line 11
-    public static User logIn(String username, String password) {
+    public static User logIn(String username, String password, JFrame frame) {
         User returnUser = nullUser;
+        Error error;
         if (username.equals("") || password.equals("")) {
-            System.out.println("Please enter valid credentials");
+            error = Error.invalidCredentials;
+            Error.displayError(error, frame);
         } else {
             boolean found = false; //Boolean variable used to check the existence of the username
             for (User tempUser : UserList) { //Getting the credentials from every User in the UserList
@@ -64,11 +69,11 @@ public class User {
                     if (tempUser.username.equals(username)) { //If one user has the same username as the one from the inputs
                         if (tempUser.password.equals(password)) {
                             found = true; //The boolean variable becomes true showing that we found a user with the same username
-                            System.out.println("Connection was successful. Welcome " + username);
                             returnUser = tempUser;
                             break; //Break from the loop, no need to check any further
                         } else {
-                            System.out.println("Wrong password. Please try again");
+                            error = Error.wrongPassword;
+                            Error.displayError(error, frame);
                             found = true;
                             break;
                         }
@@ -76,56 +81,43 @@ public class User {
                 }
             }
             if (!found) {
-                System.out.println("The username does not exist. Please try again");
+                error = Error.usernameDoesNotExist;
+                Error.displayError(error, frame);
             }
         }
         return returnUser;
     }
     //Method used to change the username
-    protected void SetUsername(String newUsername) {
-        
-        //Getting credentials and checking to see if they are correct before changing the username
-        Scanner lineReader = new Scanner(System.in);
-        System.out.println("Please insert your username and password in order to change your username");
-        System.out.print("Username: ");
-        String tempUsername = lineReader.nextLine();
-        System.out.print("\n" + "Password");
-        String tempPassword = lineReader.nextLine();
-
-        User tempUser = logIn(tempUsername, tempPassword); //Using the connect method in order to check that the person trying to change the username has the credentials of said user
-
-        lineReader.close();
-        
-        if (tempUser != nullUser) {
-            this.username = newUsername; //Changes the username to the new one
-            System.out.println("Username changed successfully");
+    protected static void SetUsername(String oldUsername, String oldpassword , String newUsername, JFrame calledByFrame) {
+        User retUser = logIn(oldUsername, oldpassword, calledByFrame);
+        if (!retUser.equals(nullUser)) {
+            retUser.username = newUsername;
+            //updateDatabase
         }
     }
 
     //Method used to change the password
-    protected void SetPassword(String newPassword) {
-        
-        //Getting credentials and checking to see if they are correct before changing the username
-        Scanner lineReader = new Scanner(System.in);
-        System.out.println("Please insert your username and password in order to change your username");
-        System.out.print("Username: ");
-        String tempUsername = lineReader.nextLine();
-        System.out.print("\n" + "Password");
-        String tempPassword = lineReader.nextLine();
-
-        User tempUser = logIn(tempUsername, tempPassword); //Using the connect method in order to check that the person trying to change the username has the credentials of said user
-
-        if (tempUser != nullUser) {
-            this.password = newPassword; //Changes the password to the new one
-            System.out.println("Password changed successfully");
+    protected static void SetPassword(String oldUsername, String oldpassword , String newPassword, JFrame calledByFrame) {
+        User retUser = logIn(oldUsername, oldpassword, calledByFrame);
+        if (!retUser.equals(nullUser)) {
+            retUser.password = newPassword;
+            //updateDatabase
         }
-
-        lineReader.close();
     }
 
     protected void clearAnswers() {
         for (int i = 0; i < User.answersLength; i++) {
             answers[i] = "";
         }
+    }
+
+    protected int countAnswers() {
+        int count = 0;
+        for (int i = 0; i < User.answersLength; i++) {
+            if (!this.answers[i].equals("")) {
+                count++;
+            }
+        }
+        return count;
     }
 }

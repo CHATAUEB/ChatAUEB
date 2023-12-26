@@ -149,7 +149,7 @@ public class Gui {
                 User user;
                 switch (action) {
                     case 1 : //The dialog was called from the signUp button
-                        user = User.signUp(username, password); //Creating a User Object using the method signUp()
+                        user = User.signUp(username, password, calledByFrame); //Creating a User Object using the method signUp()
                         if (!user.equals(User.nullUser)) { //If the registration was successful
                             openMainFrame(user, calledByFrame); //Open the main frame with the User Object
                             credentials.dispose(); //Close the credentials dialog
@@ -161,7 +161,7 @@ public class Gui {
                             break;
                         }
                     case 2 : //The dialog was called from the logIn button
-                        user = User.logIn(username, password); //Creating a User Object using the method logIn()
+                        user = User.logIn(username, password, calledByFrame); //Creating a User Object using the method logIn()
                         if (!user.equals(User.nullUser)) { //If the connection was successful
                             openMainFrame(user, calledByFrame); //Open the main frame with the User Object
                             credentials.dispose(); //Close the credentials dialog
@@ -355,29 +355,17 @@ public class Gui {
     public static JMenu createUserMenu(User user, JFrame mainFrame) {
         JMenu userMenu = new JMenu(user.username);
 
-        JMenuItem changeUsername = new JMenuItem("Change username");
+        JMenuItem chatLog = new JMenuItem("Chat Log");
 
-        changeUsername.addActionListener(new ActionListener() {
+        chatLog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //openChangeFrame(action 1)
-                System.out.println("Change Username button pressed");
+                //openChatLog
+                System.out.println("Chat Log button pressed");
             }
         });
 
-        userMenu.add(changeUsername);
-
-        JMenuItem changePassword = new JMenuItem("Change password");
-
-        changePassword.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //openChangeFrame(action 2)
-                System.out.println("Change Password button pressed");
-            }
-        });
-
-        userMenu.add(changePassword);
+        userMenu.add(chatLog);
 
         JMenuItem logOut = new JMenuItem("Log Out");
 
@@ -395,6 +383,7 @@ public class Gui {
         return userMenu;
     }
 
+    
     //Questionnaire frame used to answer the questionnaire (action = 1) or view the user's previous answers (action = 2)
     public static void openQuestionnaireFrame(User user, int action, JFrame mainFrame) {
         JFrame questionnaireFrame = new JFrame("CHATAUEB - Questionnaire");
