@@ -1,5 +1,7 @@
 public class Questions {
-    public static final String[][] fullQuestions = new String[User.answersLength][7];
+    public static int questionsLength = User.answersLength;
+    public static int choices = 6;
+    public static final String[][] fullQuestions = new String[questionsLength][choices + 1];
 
     public static void createQuestions() {
         fullQuestions[0][0] = "Σε ποια μαθήματα έχετε επιτύχει περισσότερο ή έχετε εκδηλώσει ιδιαίτερο ενδιαφέρον στο λύκειο;";
@@ -128,5 +130,13 @@ public class Questions {
         fullQuestions[17][4] = "Ψηφιακή καινοτομία και επιχειρηματικότητα";
         fullQuestions[17][5] = "";
         fullQuestions[17][6] = "";
+    }
+
+    public static String[] createQuestionsOnly(String [][] fullQuestions) {
+        String[] ret = new String[User.answersLength];
+        for (int i = 0; i <User.answersLength; i++) {
+            ret[i] = fullQuestions[i][0];
+        }
+        return ret;
     }
 }
