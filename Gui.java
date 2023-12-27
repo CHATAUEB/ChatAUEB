@@ -462,8 +462,8 @@ public class Gui {
                 enter.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        processAnswers(user, tempRadioButtons); //Line 507
-                        final String chatGPTAnswer = QueryBuilder.query(questionsOnly, user.answers, QueryBuilder.defaultQuestion);
+                        processAnswers(user, tempRadioButtons); 
+                        openResponseFrame(user, "");
                         questionnaireFrame.dispose();
                         mainFrame.setVisible(true);
                     }
@@ -522,7 +522,7 @@ public class Gui {
 
     public static void openPromptFrame(User user, JFrame mainFrame) {
         JFrame promptFrame = new JFrame("CHATAUEB - Direct Prompt");
-        promptFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        promptFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         promptFrame.setSize(500, 500);
         promptFrame.setLayout(null); 
 
@@ -548,21 +548,19 @@ public class Gui {
         enter.setBounds(400, 250, 70, 20);
         promptFrame.add(enter);
 
-        Questions.createQuestions();
-        String[] questions = Questions.createQuestionsOnly(Questions.fullQuestions);
         
         enter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String prompt = promptField.getText();
-                final String chatGPTAnswer = QueryBuilder.query(questions, user.answers, prompt);               
+                openResponseFrame(user, prompt);
                 promptFrame.dispose();
                 mainFrame.setVisible(true);
             }
         });
         
         JButton view = new JButton("View Answers");
-        view.setBounds(50, 250, 120, 20);
+        view.setBounds(200, 250, 120, 20);
         promptFrame.add(view);
 
         view.addActionListener(new ActionListener() {
@@ -572,6 +570,28 @@ public class Gui {
                 System.out.println("View button pressed");
             }
         });
+
+        JButton back = new JButton("Back");
+        back.setBounds(50, 250, 70, 20);
+        promptFrame.add(back);
+
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                promptFrame.dispose();
+                mainFrame.setVisible(true);
+            }
+        });
+    }
+
+    public static void openResponseFrame(User user, String prompt) {
+        Questions.createQuestions();
+        String[] questions = Questions.createQuestionsOnly(Questions.fullQuestions);
+        String[] answers = user.answers;
+        String text = QueryBuilder.query(questions, answers, prompt);
+        //System.out.println(text);
+        String response = Message.chatGPT(text);
+        System.out.println(response);
     }
 
     public static void main(String[] args) {
