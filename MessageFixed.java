@@ -74,6 +74,8 @@ public class Message {
      */
     public static void main(String[] args) {
         // Test the chatGPT method with a Greek message
+        assert response != null : "Response should not be null";
+        assert !response.isEmpty() : "Response should not be empty";
         System.out.println(chatGPT("Πως να ξεκινήσω να βγαίνω απο το σπίτι;"));
     }
 }
