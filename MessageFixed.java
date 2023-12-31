@@ -73,9 +73,12 @@ public class Message {
      * @param args Command line arguments (not used).
      */
     public static void main(String[] args) {
-        // Test the chatGPT method with a Greek message
+        
+        // Assert that the response is not null
         assert response != null : "Response should not be null";
+        // Assert that the response is not empty
         assert !response.isEmpty() : "Response should not be empty";
+        // Test the chatGPT method with a Greek message
         System.out.println(chatGPT("Πως να ξεκινήσω να βγαίνω απο το σπίτι;"));
     }
 }
