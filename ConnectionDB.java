@@ -107,7 +107,7 @@ public class ConnectionDB {
                 // values)
                 preparedStatement.setString(1, "sss");// vazw to username apo tin klasi user
 
-                preparedStatement.setString(2, "ssssss");
+                preparedStatement.setString(2, "ssssss");// password apo user
 
                 // Execute the insert
                 int rowsAffected = preparedStatement.executeUpdate();
@@ -136,7 +136,7 @@ public class ConnectionDB {
     }
 
     // BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-    public static void uptadeAns(String[] args) {
+    public static void uptadeAns(User user) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -172,7 +172,7 @@ public class ConnectionDB {
                 }
 
                 // Execute the insert
-                int rowsAffected = preparedStatement.executeUpdate();
+                //int rowsAffected = preparedStatement.executeUpdate(); isws xriazetai
 
                 // Check the number of rows affected
                 System.out.println("Rows affected: " + rowsAffected);
