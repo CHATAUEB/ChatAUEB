@@ -49,6 +49,7 @@ public class User {
                 returnUser = new User(username, password);
             } 
         }
+        assert (returnUser != nullUser) : "Sign-up should return a valid user or guestUser";
         return returnUser;
     }
 
@@ -85,6 +86,7 @@ public class User {
                 Error.displayError(error, frame);
             }
         }
+        assert (returnUser != nullUser) : "Login should return a valid user or guestUser";
         return returnUser;
     }
     //Method used to change the username
@@ -94,6 +96,7 @@ public class User {
             retUser.username = newUsername;
             //updateDatabase
         }
+        assert (retUser.username.equals(newUsername)) : "Username should be updated";
     }
 
     //Method used to change the password
@@ -103,12 +106,14 @@ public class User {
             retUser.password = newPassword;
             //updateDatabase
         }
+        assert (retUser.password.equals(newPassword)) : "Password should be updated";
     }
 
     protected void clearAnswers() {
         for (int i = 0; i < User.answersLength; i++) {
             answers[i] = "";
         }
+        assert (countAnswers() == 0) : "Answers should be cleared";
     }
 
     protected int countAnswers() {
