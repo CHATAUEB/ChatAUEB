@@ -136,7 +136,7 @@ public class ConnectionDB {
     }
 
     // BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-    public static void uptadeAns(User user) {
+    public static void updateAns(User user) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -172,7 +172,7 @@ public class ConnectionDB {
                 }
 
                 // Execute the insert
-                //int rowsAffected = preparedStatement.executeUpdate(); isws xriazetai
+                int rowsAffected = preparedStatement.executeUpdate(); //isws xriazetai
 
                 // Check the number of rows affected
                 System.out.println("Rows affected: " + rowsAffected);
@@ -195,5 +195,9 @@ public class ConnectionDB {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void main(String[] args) {
+        download();
     }
 }

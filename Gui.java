@@ -20,6 +20,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 public class Gui {
 
     private static JFrame frame;
@@ -197,6 +198,7 @@ public class Gui {
         JFrame mainFrame = new JFrame("ChatAUEB - Menu");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(500, 500);
+        mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         calledByFrame.setVisible(false);
 
         JMenuBar menuBar = createMenuBar(user, mainFrame);
@@ -351,21 +353,9 @@ public class Gui {
         return help;
     }
 
-    //Method used to create the fifth and final menu in the main frame. It includes options to change a user's credentials and log out from the app
+    //Method used to create the fifth and final menu in the main frame. It includes an option to log out from the app
     public static JMenu createUserMenu(User user, JFrame mainFrame) {
         JMenu userMenu = new JMenu(user.username);
-
-        JMenuItem chatLog = new JMenuItem("Chat Log");
-
-        chatLog.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //openChatLog
-                System.out.println("Chat Log button pressed");
-            }
-        });
-
-        userMenu.add(chatLog);
 
         JMenuItem logOut = new JMenuItem("Log Out");
 
@@ -389,6 +379,7 @@ public class Gui {
         JFrame questionnaireFrame = new JFrame("CHATAUEB - Questionnaire");
         questionnaireFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         questionnaireFrame.setSize(1024, 1024);
+        questionnaireFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         questionnaireFrame.setLayout(new BorderLayout()); 
 
         questionnaireFrame.setVisible(true);
@@ -400,9 +391,6 @@ public class Gui {
         //Creating a similiar menu to the one in the main frame
         JMenuBar menuBar = createMenuBar(user, questionnaireFrame);
         questionnaireFrame.add(menuBar, BorderLayout.NORTH);
-
-        //Creating the two dimensional array containing the questions and choices in the class Questions
-        Questions.createQuestions();
         
         //Creating a one dimensional array containing the questions only
         String[] questionsOnly = Questions.createQuestionsOnly(Questions.fullQuestions);
@@ -449,7 +437,6 @@ public class Gui {
                             questionnairePanel.add(radioButtons[i][j]);
                         }
                     }
-
                 }
                 break;
             }
@@ -462,10 +449,49 @@ public class Gui {
                 enter.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        processAnswers(user, tempRadioButtons); 
-                        openResponseFrame(user, "");
-                        questionnaireFrame.dispose();
-                        mainFrame.setVisible(true);
+                        processAnswers(user, tempRadioButtons);
+                        int count = user.countAnswers();
+                        if (count < 10) {
+                            JDialog dialog = new JDialog();
+                            dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+                            dialog.setSize(400, 400);
+                            dialog.setLayout(null);
+                            dialog.setVisible(true);
+
+                            JLabel warning1 = new JLabel("Έχεις απαντήσει σε " + count + " απαντήσεις");
+                            JLabel warning2 = new JLabel("Προτείνουμε να απαντήσεις σε περισσότερες από 10 ερωτήσεις");
+                            warning1.setBounds(10, 30, 380, 30);
+                            warning2.setBounds(10, 60, 380, 30);
+
+                            dialog.add(warning1);
+                            dialog.add(warning2);
+
+                            JButton back = new JButton("Back");
+                            back.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    dialog.dispose();
+                                }
+                            });
+                            back.setBounds(10, 240, 150, 30);
+                            dialog.add(back);
+
+                            JButton cont = new JButton("Continue Anyway");
+                            cont.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    dialog.dispose();
+                                    questionnaireFrame.dispose();
+                                    openResponseFrame(user, "", mainFrame);
+                                }
+                            });
+                            cont.setBounds(230, 240, 150, 30);
+                            dialog.add(cont);
+                
+                        } else {
+                            questionnaireFrame.dispose();
+                            openResponseFrame(user, "", mainFrame);
+                        }
                     }
                 });
 
@@ -548,14 +574,12 @@ public class Gui {
         enter.setBounds(400, 250, 70, 20);
         promptFrame.add(enter);
 
-        
         enter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String prompt = promptField.getText();
-                openResponseFrame(user, prompt);
                 promptFrame.dispose();
-                mainFrame.setVisible(true);
+                openResponseFrame(user, prompt, mainFrame);
             }
         });
         
@@ -584,17 +608,113 @@ public class Gui {
         });
     }
 
-    public static void openResponseFrame(User user, String prompt) {
-        Questions.createQuestions();
+    public static void openResponseFrame(User user, String prompt, JFrame calledByFrame) {        
+        JFrame responseFrame = new JFrame("ChatAUEB - Response");
+        responseFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        responseFrame.setSize(1024, 1024);
+        responseFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        responseFrame.setVisible(true);
+        responseFrame.setLayout(new BorderLayout());
+
+        JMenuBar menuBar = createMenuBar(user, responseFrame);
+        responseFrame.add(menuBar, BorderLayout.NORTH);
+
+        JPanel responsePanel = new JPanel();
+        responsePanel.setLayout(null);
+        responsePanel.setSize(2048, 2048);
+        responseFrame.add(responsePanel, BorderLayout.CENTER);
+
         String[] questions = Questions.createQuestionsOnly(Questions.fullQuestions);
         String[] answers = user.answers;
         String text = QueryBuilder.query(questions, answers, prompt);
-        //System.out.println(text);
-        String response = Message.chatGPT(text);
-        System.out.println(response);
+        
+        Message msg = new Message(text);
+        Thread thread1 = new Thread(new Runnable() {
+            public void run() {
+                msg.run();
+            }
+        });
+        thread1.start();
+
+        ProgressBar progress = new ProgressBar();
+
+        responsePanel.add(progress.bar);
+        responseFrame.add(responsePanel);
+
+        progress.start();
+
+        Thread thread2 = new Thread(new Runnable() {
+            public void run() {
+                msg.waitingForResponse();
+
+                System.out.println("Waiting done");
+
+                String appropriateResponse = createAppropriateResponse(Message.retResponse);
+                progress.bar.setValue(100);
+                progress.bar.setString("Done");
+                progress.bar.setVisible(false); 
+                
+                JLabel responseLabel = new JLabel();
+                responseLabel.setText(appropriateResponse);
+                responseLabel.setHorizontalAlignment(JLabel.CENTER);
+                responseLabel.setBounds(100, 50, 1000, 600);
+
+                responsePanel.add(responseLabel);
+
+                JPanel buttonsPanel = new JPanel(new GridLayout(1,1,20,0));
+
+                JButton back = new JButton("Back");
+                back.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        responseFrame.dispose();
+                        calledByFrame.setVisible(true);
+                    }  
+                });
+
+                buttonsPanel.add(back);
+                responseFrame.add(buttonsPanel, BorderLayout.SOUTH);
+                responseFrame.setVisible(true);
+            }   
+        });
+        thread2.start();
+                    
+    }
+
+    public static String createAppropriateResponse(String response) {
+        StringBuilder ret = new StringBuilder();
+        char[] characters = response.toCharArray();
+        ret.append("<html>");
+        int count = 0;
+        for (int i = 0; i < characters.length; i++) {
+            count++;
+            if (count > 200 && characters[i] == ' ') {
+                ret.append("<br/>");
+                count = 0;
+            } else {
+                if (!(characters[i] == 'n') && !(characters[i] == '\\')) {
+                    ret.append(characters[i]);
+                } else if (characters[i] == '\\') {
+                    ret.append("");
+                } else {
+                    ret.append("<br/>");
+                }
+            }
+        }
+        ret.append("<br/>");
+        ret.append("<br/>");
+        ret.append("<br/>");
+        ret.append("<br/>");
+        ret.append("Η παραπάνω απάντηση προκύπτει από την ερμηνεία των απαντήσεών σας από το μοντέλο GPT-3.5 της OpenAI.");
+        ret.append(" ");
+        ret.append("Η ομάδα του ChatAUEB δεν φέρει καμία ευθύνη για τα παραπάνω αποτέλεσματα και την ορθότητά τους.");
+        ret.append("</html>");
+        return ret.toString();
     }
 
     public static void main(String[] args) {
+        Questions.createQuestions();
         openFrame();
     }
 }
