@@ -217,7 +217,7 @@ public class Gui {
         JMenu chat = createChatMenu(user, mainFrame); //line 238
         menuBar.add(chat);
 
-        JMenu aboutUs = createAboutUsMenu(); //line 257
+        JMenu aboutUs = createAboutUsMenu(user, mainFrame); //line 257
         menuBar.add(aboutUs);
 
         JMenu help = createHelpMenu(); //line 288
@@ -280,34 +280,54 @@ public class Gui {
     }
 
     //Method used to create the third menu in the main frame. It includes options to read about our purpose and about our members
-    public static JMenu createAboutUsMenu() {
+    public static JMenu createAboutUsMenu(User user, JFrame calledByFrame) {
         JMenu aboutUs = new JMenu("About Us");
 
-        JMenuItem purpose = new JMenuItem("Purpose");
+        JMenuItem aboutUsItem = new JMenuItem("Purpose and Team");
 
-        purpose.addActionListener(new ActionListener() {
+        aboutUsItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //openPurposeFrame
-                System.out.println("Purpose button pressed");
+                System.out.println("About us pressed");
+                openAboutUsFrame(user, frame);
             }
         });
-
-        aboutUs.add(purpose);
-
-        JMenuItem members = new JMenuItem("Our Team");
-
-        members.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //openMembersFrame
-                System.out.println("Members button pressed");
-            }
-        });
-
-        aboutUs.add(members);
+        aboutUs.add(aboutUsItem);
 
         return aboutUs;
+    }
+
+    public static void openAboutUsFrame(User user, JFrame calledByFrame) {
+        JFrame aboutUsFrame = new JFrame("CHATAUEB - About Us");
+        aboutUsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        aboutUsFrame.setSize(1024, 1024);
+        aboutUsFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        aboutUsFrame.setLayout(new BorderLayout()); 
+
+        aboutUsFrame.setVisible(true);
+        calledByFrame.setVisible(false);
+
+        JMenuBar menuBar = createMenuBar(user, aboutUsFrame);
+        aboutUsFrame.add(menuBar, BorderLayout.NORTH);
+
+        JPanel nullPanel = new JPanel();
+        aboutUsFrame.add(nullPanel, BorderLayout.WEST);
+
+        JPanel aboutUsPanel = new JPanel();
+        aboutUsPanel.setLayout(null);
+        aboutUsFrame.add(aboutUsPanel, BorderLayout.CENTER);
+
+        JLabel purposeLabel = new JLabel();
+        purposeLabel.setBounds(0, 0, 1500, 200);
+        purposeLabel.setText(Labels.PURPOSE);
+        aboutUsPanel.add(purposeLabel);
+
+        JLabel teamLabel = new JLabel();
+        teamLabel.setBounds(0, 150, 1500, 600);
+        teamLabel.setText(Labels.TEAM);
+        aboutUsPanel.add(teamLabel);
+
+        aboutUsFrame.setVisible(true);
     }
 
     //Method used to create the fourth menu in the main frame. It includes options to help the user understand the usage of the questionnaire and the direct prompt as well as look at some frequently asked questions
@@ -319,7 +339,7 @@ public class Gui {
         questionnaire.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //openHelpFrame(action 1)
+                //openHelpFrame(1, user, mainFrame);
                 System.out.println("Questionnaire Help button pressed");
             }
         });
@@ -715,6 +735,7 @@ public class Gui {
 
     public static void main(String[] args) {
         Questions.createQuestions();
+        Labels.createLabels();
         openFrame();
     }
 }
