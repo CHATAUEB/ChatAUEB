@@ -23,23 +23,30 @@ import java.awt.event.ActionListener;
 
 public class Gui {
 
-    private static JFrame frame;
+    public static JFrame entryFrame;
+    public static JFrame mainFrame;
+    public static JFrame questionnaireFrame;
+    public static JFrame promptFrame;
+    public static JFrame aboutUsFrame;
+    public static JFrame helpFrame;
+    public static JFrame responseFrame;
+    private static User user;
 
-    public static void openFrame() {
-        frame = new JFrame("CHATAUEB - Credentials");
+    public static void openEntryFrame() {
+        entryFrame = new JFrame("CHATAUEB - Credentials");
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        entryFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        frame.setSize(500, 500);
+        entryFrame.setSize(500, 500);
 
-        TextFrame();
-        createButtons(); // Call createButtons to add buttons to the frame
+        createEntryLabel();
+        createEntryButtons(); // Call createButtons to add buttons to the frame
 
-        frame.setLayout(null);
-        frame.setVisible(true);
+        entryFrame.setLayout(null);
+        entryFrame.setVisible(true);
     }
 
-    public static void TextFrame() {
+    public static void createEntryLabel() {
         JLabel label = new JLabel("Welcome to ChatAUEB.");
         label.setBounds(10, 10, 480, 100); // Adjusted the width to 480 for centering
         label.setHorizontalAlignment(JLabel.CENTER); // Center the text
@@ -48,56 +55,53 @@ public class Gui {
         Font boldFont = new Font(label.getFont().getFontName(), Font.BOLD, 20);
         label.setFont(boldFont);
 
-        frame.add(label);
+        entryFrame.add(label);
     }
 
-    public static void createButtons() {
+    public static void createEntryButtons() {
         int labelHeight = 100; // Height of the label
 
         // Add buttons for sign up, log in, and change password
         JButton signUpButton = new JButton("Sign Up");
         signUpButton.setBounds(200, labelHeight, 100, 30); // Centered vertically based on label height
-        frame.add(signUpButton);
+        entryFrame.add(signUpButton);
 
         JButton loginButton = new JButton("Log In");
         loginButton.setBounds(200, labelHeight + 40, 100, 30); // Centered vertically based on label height
-        frame.add(loginButton);
+        entryFrame.add(loginButton);
 
         JButton guestButton = new JButton("Enter as a guest");
         guestButton.setBounds(175, labelHeight + 80, 150, 30);
-        frame.add(guestButton);
+        entryFrame.add(guestButton);
 
         // Add action listeners for the buttons
         signUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Sign Up button pressed");
-                createCredentialsDialog(1, frame); //calls a dialog used to verify credentials, the number signifies the action the method createCredentialsDialog should take, 1 is for signUp, 2 is for logIn
+                createCredentialsDialog(1); //calls a dialog used to verify credentials, the number signifies the action the method createCredentialsDialog should take, 1 is for signUp, 2 is for logIn
             }
         });
 
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Log In button pressed");
-                createCredentialsDialog(2, frame); //calls a dialog used to verify credentials
+                createCredentialsDialog(2); //calls a dialog used to verify credentials
             }
         });
 
         guestButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Guest button pressed");
-                User user = User.guestUser;
+                user = User.guestUser;
                 user.clearAnswers();
-                openMainFrame(user, frame);
+                openMainFrame();
             }
         });
 
 
     }
 
-    public static void createCredentialsDialog(int action, JFrame calledByFrame) {
+    public static void createCredentialsDialog(int action) {
         //Creates the dialog used for credentials verification
         JDialog credentials = new JDialog();
         credentials.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -147,30 +151,29 @@ public class Gui {
             public void actionPerformed(ActionEvent e) {
                 String username = userText.getText(); //When the enter button is pressed the credentials entered by the user are retrieved 
                 String password = new String(passText.getPassword());
-                User user;
                 switch (action) {
                     case 1 : //The dialog was called from the signUp button
-                        user = User.signUp(username, password, calledByFrame); //Creating a User Object using the method signUp()
+                        user = User.signUp(username, password); //Creating a User Object using the method signUp()
                         if (!user.equals(User.nullUser)) { //If the registration was successful
-                            openMainFrame(user, calledByFrame); //Open the main frame with the User Object
+                            openMainFrame(); //Open the main frame with the User Object
                             credentials.dispose(); //Close the credentials dialog
-                            frame.dispose(); //Close the entry frame
+                            entryFrame.dispose(); //Close the entry frame
                             break;
                         } else { //The registration was not successful
                             credentials.dispose(); //Close the credentials dialog
-                            createCredentialsDialog(1, calledByFrame); //Open the credentials dialog again
+                            createCredentialsDialog(1); //Open the credentials dialog again
                             break;
                         }
                     case 2 : //The dialog was called from the logIn button
-                        user = User.logIn(username, password, calledByFrame); //Creating a User Object using the method logIn()
+                        user = User.logIn(username, password); //Creating a User Object using the method logIn()
                         if (!user.equals(User.nullUser)) { //If the connection was successful
-                            openMainFrame(user, calledByFrame); //Open the main frame with the User Object
+                            openMainFrame(); //Open the main frame with the User Object
                             credentials.dispose(); //Close the credentials dialog
-                            frame.dispose(); //Close the entry frame
+                            entryFrame.dispose(); //Close the entry frame
                             break;
                         } else { //If the connection was not successful
                             credentials.dispose(); //Close the credentials dialog
-                            createCredentialsDialog(2, calledByFrame); //Open the credentials dialog again
+                            createCredentialsDialog(2); //Open the credentials dialog again
                             break;
                         }
                 }
@@ -194,30 +197,30 @@ public class Gui {
     }
 
     //The main frame for the application. It contains a menu bar with all the options for the user. 
-    public static void openMainFrame(User user, JFrame calledByFrame) {
-        JFrame mainFrame = new JFrame("ChatAUEB - Menu");
+    public static void openMainFrame() {
+        mainFrame = new JFrame("ChatAUEB - Menu");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(500, 500);
         mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        calledByFrame.setVisible(false);
+        entryFrame.setVisible(false);
 
-        JMenuBar menuBar = createMenuBar(user, mainFrame);
+        JMenuBar menuBar = createMenuBar(mainFrame);
         mainFrame.setJMenuBar(menuBar);
 
         mainFrame.setVisible(true);        
     }
     
     //Method used to create all the components included in the MenuBar
-    public static JMenuBar createMenuBar(User user, JFrame mainFrame) {
+    public static JMenuBar createMenuBar(JFrame calledByFrame) {
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu questionnaire = createQuestionnaireMenu(user, mainFrame); //line 209
+        JMenu questionnaire = createQuestionnaireMenu(calledByFrame); //line 209
         menuBar.add(questionnaire);
 
-        JMenu chat = createChatMenu(user, mainFrame); //line 238
+        JMenu chat = createChatMenu(calledByFrame); //line 238
         menuBar.add(chat);
 
-        JMenu aboutUs = createAboutUsMenu(user, mainFrame); //line 257
+        JMenu aboutUs = createAboutUsMenu(calledByFrame); //line 257
         menuBar.add(aboutUs);
 
         JMenu help = createHelpMenu(); //line 288
@@ -225,14 +228,14 @@ public class Gui {
  
         menuBar.add(Box.createHorizontalGlue()); //used to send the user menu to the far right of the screen
 
-        JMenu userMenu = createUserMenu(user, mainFrame); //line 331
+        JMenu userMenu = createUserMenu(); //line 331
         menuBar.add(userMenu);
 
         return menuBar;
     }
     
     //Method used to create the first menu in the main frame. It includes options to fill in the questionnaire and to view the user's answer already given
-    public static JMenu createQuestionnaireMenu(User user, JFrame mainFrame) {
+    public static JMenu createQuestionnaireMenu(JFrame calledByFrame) {
         JMenu questionnaire = new JMenu("Questionnaire");
 
         JMenuItem answer = new JMenuItem("Fill in questionnaire");
@@ -241,16 +244,16 @@ public class Gui {
         answer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openQuestionnaireFrame(user, 1, mainFrame);
-                System.out.println("Fill in button pressed");
+                openQuestionnaireFrame(1);
+                calledByFrame.dispose();
             }
         });
 
         view.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openQuestionnaireFrame(user, 2, mainFrame);
-                System.out.println("View button pressed");
+                openQuestionnaireFrame(2);
+                calledByFrame.dispose();
             }
         });
 
@@ -260,143 +263,9 @@ public class Gui {
         return questionnaire;
     }
 
-    //Method used to create the second menu in the main frame. It includes an option to send a message to ChatGPT directly
-    public static JMenu createChatMenu(User user, JFrame mainFrame) {
-        JMenu chat = new JMenu("Chat with ChatAUEB");
-
-        JMenuItem prompt = new JMenuItem("Direct Prompt");
-
-        prompt.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openPromptFrame(user, mainFrame);
-                System.out.println("Chat button pressed");
-            }
-        });
-
-        chat.add(prompt);
-
-        return chat;
-    }
-
-    //Method used to create the third menu in the main frame. It includes options to read about our purpose and about our members
-    public static JMenu createAboutUsMenu(User user, JFrame calledByFrame) {
-        JMenu aboutUs = new JMenu("About Us");
-
-        JMenuItem aboutUsItem = new JMenuItem("Purpose and Team");
-
-        aboutUsItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("About us pressed");
-                openAboutUsFrame(user, frame);
-            }
-        });
-        aboutUs.add(aboutUsItem);
-
-        return aboutUs;
-    }
-
-    public static void openAboutUsFrame(User user, JFrame calledByFrame) {
-        JFrame aboutUsFrame = new JFrame("CHATAUEB - About Us");
-        aboutUsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        aboutUsFrame.setSize(1024, 1024);
-        aboutUsFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        aboutUsFrame.setLayout(new BorderLayout()); 
-
-        aboutUsFrame.setVisible(true);
-        calledByFrame.setVisible(false);
-
-        JMenuBar menuBar = createMenuBar(user, aboutUsFrame);
-        aboutUsFrame.add(menuBar, BorderLayout.NORTH);
-
-        JPanel nullPanel = new JPanel();
-        aboutUsFrame.add(nullPanel, BorderLayout.WEST);
-
-        JPanel aboutUsPanel = new JPanel();
-        aboutUsPanel.setLayout(null);
-        aboutUsFrame.add(aboutUsPanel, BorderLayout.CENTER);
-
-        JLabel purposeLabel = new JLabel();
-        purposeLabel.setBounds(0, 0, 1500, 200);
-        purposeLabel.setText(Labels.PURPOSE);
-        aboutUsPanel.add(purposeLabel);
-
-        JLabel teamLabel = new JLabel();
-        teamLabel.setBounds(0, 150, 1500, 600);
-        teamLabel.setText(Labels.TEAM);
-        aboutUsPanel.add(teamLabel);
-
-        aboutUsFrame.setVisible(true);
-    }
-
-    //Method used to create the fourth menu in the main frame. It includes options to help the user understand the usage of the questionnaire and the direct prompt as well as look at some frequently asked questions
-    public static JMenu createHelpMenu() {
-        JMenu help = new JMenu("Help");
-
-        JMenuItem questionnaire = new JMenuItem("Questionnaire");
-
-        questionnaire.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //openHelpFrame(1, user, mainFrame);
-                System.out.println("Questionnaire Help button pressed");
-            }
-        });
-
-        help.add(questionnaire);
-
-        JMenuItem prompt = new JMenuItem("Direct Prompt");
-
-        prompt.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //openHelpFrame(action 2)
-                System.out.println("Chat Help button pressed");
-            }
-        });
-
-        help.add(prompt);
-
-        JMenuItem faq = new JMenuItem("FAQ's");
-
-        faq.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //openHelpFrame(action 3)
-                System.out.println("FAQ button pressed");
-            }
-        });
-
-        help.add(faq);
-
-        return help;
-    }
-
-    //Method used to create the fifth and final menu in the main frame. It includes an option to log out from the app
-    public static JMenu createUserMenu(User user, JFrame mainFrame) {
-        JMenu userMenu = new JMenu(user.username);
-
-        JMenuItem logOut = new JMenuItem("Log Out");
-
-        logOut.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mainFrame.dispose();
-                openFrame();
-                System.out.println("Log Out button pressed");
-            }
-        });
-
-        userMenu.add(logOut);
-
-        return userMenu;
-    }
-
-    
     //Questionnaire frame used to answer the questionnaire (action = 1) or view the user's previous answers (action = 2)
-    public static void openQuestionnaireFrame(User user, int action, JFrame mainFrame) {
-        JFrame questionnaireFrame = new JFrame("CHATAUEB - Questionnaire");
+    public static void openQuestionnaireFrame(int action) {
+        questionnaireFrame = new JFrame("CHATAUEB - Questionnaire");
         questionnaireFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         questionnaireFrame.setSize(1024, 1024);
         questionnaireFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -409,7 +278,7 @@ public class Gui {
         questionnairePanel.setBounds(40, 20, 2048, 5100);
 
         //Creating a similiar menu to the one in the main frame
-        JMenuBar menuBar = createMenuBar(user, questionnaireFrame);
+        JMenuBar menuBar = createMenuBar(questionnaireFrame);
         questionnaireFrame.add(menuBar, BorderLayout.NORTH);
         
         //Creating a one dimensional array containing the questions only
@@ -469,7 +338,7 @@ public class Gui {
                 enter.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        processAnswers(user, tempRadioButtons);
+                        processAnswers(tempRadioButtons);
                         int count = user.countAnswers();
                         if (count < 10) {
                             JDialog dialog = new JDialog();
@@ -502,7 +371,7 @@ public class Gui {
                                 public void actionPerformed(ActionEvent e) {
                                     dialog.dispose();
                                     questionnaireFrame.dispose();
-                                    openResponseFrame(user, "", mainFrame);
+                                    openResponseFrame("");
                                 }
                             });
                             cont.setBounds(230, 240, 150, 30);
@@ -510,7 +379,7 @@ public class Gui {
                 
                         } else {
                             questionnaireFrame.dispose();
-                            openResponseFrame(user, "", mainFrame);
+                            openResponseFrame("");
                         }
                     }
                 });
@@ -553,7 +422,7 @@ public class Gui {
         return ret;
     }
 
-    public static void processAnswers(User user, JRadioButton[][] radioButtons) {
+    public static void processAnswers(JRadioButton[][] radioButtons) {
         for (int i = 0; i < Questions.questionsLength; i++) {
             String answer = "";
             for (int j = 0; j < Questions.choices + 1; j++) {
@@ -566,16 +435,144 @@ public class Gui {
         }
     }
 
-    public static void openPromptFrame(User user, JFrame mainFrame) {
-        JFrame promptFrame = new JFrame("CHATAUEB - Direct Prompt");
+    //Method used to create the second menu in the main frame. It includes an option to send a message to ChatGPT directly
+    public static JMenu createChatMenu(JFrame calledByFrame) {
+        JMenu chat = new JMenu("Chat with ChatAUEB");
+
+        JMenuItem prompt = new JMenuItem("Direct Prompt");
+
+        prompt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openPromptFrame(calledByFrame);
+            }
+        });
+
+        chat.add(prompt);
+
+        return chat;
+    }
+
+    //Method used to create the third menu in the main frame. It includes options to read about our purpose and about our members
+    public static JMenu createAboutUsMenu(JFrame calledByFrame) {
+        JMenu aboutUs = new JMenu("About Us");
+
+        JMenuItem aboutUsItem = new JMenuItem("Purpose and Team");
+
+        aboutUsItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openAboutUsFrame();
+                calledByFrame.dispose();
+            }
+        });
+        aboutUs.add(aboutUsItem);
+
+        return aboutUs;
+    }
+
+    public static void openAboutUsFrame() {
+        aboutUsFrame = new JFrame("CHATAUEB - About Us");
+        aboutUsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        aboutUsFrame.setSize(1024, 1024);
+        aboutUsFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        aboutUsFrame.setLayout(new BorderLayout()); 
+
+        aboutUsFrame.setVisible(true);
+        mainFrame.setVisible(false);
+
+        JMenuBar menuBar = createMenuBar(aboutUsFrame);
+        aboutUsFrame.add(menuBar, BorderLayout.NORTH);
+
+        JPanel nullPanel = new JPanel();
+        aboutUsFrame.add(nullPanel, BorderLayout.WEST);
+
+        JPanel aboutUsPanel = new JPanel();
+        aboutUsPanel.setLayout(null);
+        aboutUsFrame.add(aboutUsPanel, BorderLayout.CENTER);
+
+        JLabel purposeLabel = new JLabel();
+        purposeLabel.setBounds(0, 0, 1500, 200);
+        purposeLabel.setText(Labels.PURPOSE);
+        aboutUsPanel.add(purposeLabel);
+
+        JLabel teamLabel = new JLabel();
+        teamLabel.setBounds(0, 150, 1500, 600);
+        teamLabel.setText(Labels.TEAM);
+        aboutUsPanel.add(teamLabel);
+
+        aboutUsFrame.setVisible(true);
+    }
+
+    //Method used to create the fourth menu in the main frame. It includes options to help the user understand the usage of the questionnaire and the direct prompt as well as look at some frequently asked questions
+    public static JMenu createHelpMenu() {
+        JMenu help = new JMenu("Help");
+
+        JMenuItem questionnaire = new JMenuItem("Questionnaire");
+
+        questionnaire.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //openHelpFrame(1, mainFrame);
+            }
+        });
+
+        help.add(questionnaire);
+
+        JMenuItem prompt = new JMenuItem("Direct Prompt");
+
+        prompt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //openHelpFrame(action 2)
+            }
+        });
+
+        help.add(prompt);
+
+        JMenuItem faq = new JMenuItem("FAQ's");
+
+        faq.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //openHelpFrame(action 3)
+            }
+        });
+
+        help.add(faq);
+
+        return help;
+    }
+
+    //Method used to create the fifth and final menu in the main frame. It includes an option to log out from the app
+    public static JMenu createUserMenu() {
+        JMenu userMenu = new JMenu(user.username);
+
+        JMenuItem logOut = new JMenuItem("Log Out");
+
+        logOut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainFrame.dispose();
+                openEntryFrame();
+            }
+        });
+
+        userMenu.add(logOut);
+
+        return userMenu;
+    }
+
+    public static void openPromptFrame(JFrame calledByFrame) {
+        promptFrame = new JFrame("CHATAUEB - Direct Prompt");
         promptFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         promptFrame.setSize(500, 500);
         promptFrame.setLayout(null); 
 
         promptFrame.setVisible(true);
-        mainFrame.setVisible(false); 
+        calledByFrame.setVisible(false); 
         
-        JMenuBar menuBar = createMenuBar(user, mainFrame);
+        JMenuBar menuBar = createMenuBar(promptFrame);
         promptFrame.add(menuBar);
         
         JLabel promptLabel1 = new JLabel("Write down a question you would like to ask ChatGPT based on");
@@ -599,7 +596,7 @@ public class Gui {
             public void actionPerformed(ActionEvent e) {
                 String prompt = promptField.getText();
                 promptFrame.dispose();
-                openResponseFrame(user, prompt, mainFrame);
+                openResponseFrame(prompt);
             }
         });
         
@@ -610,8 +607,7 @@ public class Gui {
         view.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openQuestionnaireFrame(user, 2, promptFrame);
-                System.out.println("View button pressed");
+                openQuestionnaireFrame(2);
             }
         });
 
@@ -623,13 +619,13 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 promptFrame.dispose();
-                mainFrame.setVisible(true);
+                calledByFrame.setVisible(true);
             }
         });
     }
 
-    public static void openResponseFrame(User user, String prompt, JFrame calledByFrame) {        
-        JFrame responseFrame = new JFrame("ChatAUEB - Response");
+    public static void openResponseFrame(String prompt) {        
+        responseFrame = new JFrame("ChatAUEB - Response");
         responseFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         responseFrame.setSize(1024, 1024);
         responseFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -637,7 +633,7 @@ public class Gui {
         responseFrame.setVisible(true);
         responseFrame.setLayout(new BorderLayout());
 
-        JMenuBar menuBar = createMenuBar(user, responseFrame);
+        JMenuBar menuBar = createMenuBar(responseFrame);
         responseFrame.add(menuBar, BorderLayout.NORTH);
 
         JPanel responsePanel = new JPanel();
@@ -668,8 +664,6 @@ public class Gui {
             public void run() {
                 msg.waitingForResponse();
 
-                System.out.println("Waiting done");
-
                 String appropriateResponse = createAppropriateResponse(Message.retResponse);
                 progress.bar.setValue(100);
                 progress.bar.setString("Done");
@@ -689,7 +683,7 @@ public class Gui {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         responseFrame.dispose();
-                        calledByFrame.setVisible(true);
+                        mainFrame.setVisible(true);
                     }  
                 });
 
@@ -736,6 +730,6 @@ public class Gui {
     public static void main(String[] args) {
         Questions.createQuestions();
         Labels.createLabels();
-        openFrame();
+        openEntryFrame();
     }
 }
