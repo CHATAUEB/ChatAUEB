@@ -19,3 +19,4 @@ public class Error {
     static Error usernameDoesNotExist = new Error("Username Does Not Exist", "The username you have entered does not exist. Please try again");
     static Error wrongPassword = new Error("Wrong Password", "The password you have entered is not correct. Please try again");
 }
+//kataskeuasis ERROR gia unit testing an ola ta antikeimena exoun k ta 2 arg
