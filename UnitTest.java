@@ -13,7 +13,7 @@ public class UnitTest {
         Assert.assertTrue("Generated query does not contain expected information",
                 result.contains(QueryBuilder.TEXT));
         Assert.assertTrue("Generated query does not contain expected questions",
-                result.contains(QueryBuilder.defaultQuestion));
+                result.contains(QueryBuilder.DEFAULTQUESTION));
     }
   
     @Test
