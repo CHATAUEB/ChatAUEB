@@ -43,14 +43,15 @@ public class Gui {
         createEntryLabel();
         createEntryButtons(); // Call createButtons to add buttons to the frame
 
-        entryFrame.getContentPane().setBackground(Color.WHITE);
+        entryFrame.getContentPane().setBackground(new Color(51, 51, 51));
         entryFrame.setLayout(null);
         entryFrame.setVisible(true);
     }
 
     public static void createEntryLabel() {
         JLabel label = new JLabel("Welcome to ");
-        label.setBounds(110, 50, 130, 50); // Adjusted the width to 480 for centering
+        label.setBounds(190, 50, 480, 50); // Adjusted the width to 480 for centering
+        label.setForeground(Color.WHITE); //White text colour font
         //label.setHorizontalAlignment(JLabel.CENTER); // Center the text
 
         // Set the font to bold
@@ -59,14 +60,14 @@ public class Gui {
 
         entryFrame.add(label);
 
-        JLabel label2 = new JLabel("ChatAUEB");
-        label2.setBounds(230, 50, 100, 50);
+        //JLabel label2 = new JLabel("ChatAUEB");
+        //label2.setBounds(230, 50, 100, 50);
         //label2.setHorizontalAlignment(JLabel.CENTER);
 
-        label2.setForeground(new Color(158, 22, 22));
-        label2.setFont(boldFont);
+        //label2.setForeground(new Color(158, 22, 22));
+        //label2.setFont(boldFont);
 
-        entryFrame.add(label2);
+        //entryFrame.add(label2);
     }
 
     public static void createEntryButtons() {
@@ -81,10 +82,14 @@ public class Gui {
 
         JButton loginButton = new JButton("Log In");
         loginButton.setBounds(200, labelHeight + 40, 100, 30); // Centered vertically based on label height
+        loginButton.setBackground(new Color(158, 22, 22));
+        loginButton.setForeground(Color.WHITE);
         entryFrame.add(loginButton);
 
         JButton guestButton = new JButton("Enter as a guest");
         guestButton.setBounds(175, labelHeight + 80, 150, 30);
+        guestButton.setBackground(new Color(158, 22, 22));
+        guestButton.setForeground(Color.WHITE);
         entryFrame.add(guestButton);
 
         // Add action listeners for the buttons
@@ -119,6 +124,7 @@ public class Gui {
         JDialog credentials = new JDialog();
         credentials.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         credentials.setSize(300, 300);
+        credentials.getContentPane().setBackground(new Color(51, 51, 51));
 
         credentials.setVisible(true);
         credentials.setLayout(null);
@@ -126,9 +132,12 @@ public class Gui {
         //Panel containing the label and textfield for the username
         JPanel userPanel = new JPanel();
         userPanel.setBounds(100, 70, 100, 40);
+        userPanel.setBackground(new Color(51, 51, 51));
 
         JLabel userLabel = new JLabel("Username: ");
         userLabel.setBounds(100, 70, 100, 20);
+        userLabel.setForeground(Color.WHITE);
+
 
         JTextField userText = new JTextField(30);
         userText.setBounds(100, 90, 100, 20);
@@ -141,9 +150,11 @@ public class Gui {
         //Panel containing the label and textfield for the password
         JPanel passPanel = new JPanel();
         passPanel.setBounds(100, 110, 100, 40);
+        passPanel.setBackground(new Color(51, 51, 51));
 
         JLabel passLabel = new JLabel("Password: ");
         passLabel.setBounds(100, 110, 100, 20);
+        passLabel.setForeground(Color.WHITE);
 
         JPasswordField passText = new JPasswordField(30);
         passText.setBounds(100, 130, 100, 20);
@@ -155,6 +166,8 @@ public class Gui {
         
         //Button used to get credentials and login or sign up
         JButton enter = new JButton("Enter");
+        enter.setBackground(new Color(158, 22, 22));
+        enter.setForeground(Color.WHITE);
         enter.setBounds(190, 200, 70, 30);
                
         credentials.add(enter); 
@@ -196,6 +209,8 @@ public class Gui {
 
         //Button used to go back to the entry frame
         JButton backButton = new JButton("Back");
+        backButton.setBackground(new Color(158, 22, 22));
+        backButton.setForeground(Color.WHITE);
         backButton.setBounds(40, 200, 70, 30);
         
         credentials.add(backButton);
@@ -215,7 +230,7 @@ public class Gui {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(500, 500);
         mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        mainFrame.getContentPane().setBackground(Color.WHITE);
+        mainFrame.getContentPane().setBackground(new Color(51, 51, 51));
         entryFrame.setVisible(false);
 
         JMenuBar menuBar = createMenuBar(mainFrame);
@@ -234,12 +249,15 @@ public class Gui {
         menuBar.add(questionnaire);
 
         JMenu chat = createChatMenu(calledByFrame); //line 238
+        chat.setForeground(Color.WHITE);
         menuBar.add(chat);
 
         JMenu aboutUs = createAboutUsMenu(calledByFrame); //line 257
+        aboutUs.setForeground(Color.WHITE);
         menuBar.add(aboutUs);
 
         JMenu help = createHelpMenu(); //line 288
+        help.setForeground(Color.WHITE);
         menuBar.add(help);
  
         menuBar.add(Box.createHorizontalGlue()); //used to send the user menu to the far right of the screen
@@ -253,9 +271,16 @@ public class Gui {
     //Method used to create the first menu in the main frame. It includes options to fill in the questionnaire and to view the user's answer already given
     public static JMenu createQuestionnaireMenu(JFrame calledByFrame) {
         JMenu questionnaire = new JMenu("Questionnaire");
+        questionnaire.setBackground(new Color(158, 22, 22));
+        questionnaire.setForeground(Color.WHITE);
 
         JMenuItem answer = new JMenuItem("Fill in questionnaire");
+        answer.setBackground(new Color(158, 22, 22));
+        answer.setForeground(Color.WHITE);
+        
         JMenuItem view = new JMenuItem("See your answers");
+        view.setBackground(new Color(158, 22, 22));
+        view.setForeground(Color.WHITE);
 
         answer.addActionListener(new ActionListener() {
             @Override
@@ -351,6 +376,9 @@ public class Gui {
                 final JRadioButton[][] tempRadioButtons = radioButtons;
 
                 JButton enter = new JButton("Enter");
+                enter.setBackground(new Color(158, 22, 22));
+                enter.setForeground(Color.WHITE);
+                
                 enter.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -372,6 +400,9 @@ public class Gui {
                             dialog.add(warning2);
 
                             JButton back = new JButton("Back");
+                            back.setBackground(new Color(158, 22, 22));
+                            back.setForeground(Color.WHITE);
+                            
                             back.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
@@ -382,6 +413,9 @@ public class Gui {
                             dialog.add(back);
 
                             JButton cont = new JButton("Continue Anyway");
+                            cont.setBackground(new Color(158, 22, 22));
+                            cont.setForeground(Color.WHITE);
+                            
                             cont.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
@@ -401,6 +435,9 @@ public class Gui {
                 });
 
                 JButton back = new JButton("Back");
+                back.setBackground(new Color(158, 22, 22));
+                back.setForeground(Color.WHITE);
+                
                 back.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -454,8 +491,12 @@ public class Gui {
     //Method used to create the second menu in the main frame. It includes an option to send a message to ChatGPT directly
     public static JMenu createChatMenu(JFrame calledByFrame) {
         JMenu chat = new JMenu("Chat with ChatAUEB");
+        chat.setBackground(new Color(158, 22, 22));
+        chat.setForeground(Color.WHITE);
 
         JMenuItem prompt = new JMenuItem("Direct Prompt");
+        prompt.setBackground(new Color(158, 22, 22));
+        prompt.setForeground(Color.WHITE);
 
         prompt.addActionListener(new ActionListener() {
             @Override
@@ -472,8 +513,12 @@ public class Gui {
     //Method used to create the third menu in the main frame. It includes options to read about our purpose and about our members
     public static JMenu createAboutUsMenu(JFrame calledByFrame) {
         JMenu aboutUs = new JMenu("About Us");
+        aboutUs.setBackground(new Color(158, 22, 22));
+        aboutUs.setForeground(Color.WHITE);
 
         JMenuItem aboutUsItem = new JMenuItem("Purpose and Team");
+        aboutUsItem.setBackground(new Color(158, 22, 22));
+        aboutUsItem.setForeground(Color.WHITE);
 
         aboutUsItem.addActionListener(new ActionListener() {
             @Override
@@ -523,8 +568,12 @@ public class Gui {
     //Method used to create the fourth menu in the main frame. It includes options to help the user understand the usage of the questionnaire and the direct prompt as well as look at some frequently asked questions
     public static JMenu createHelpMenu() {
         JMenu help = new JMenu("Help");
+        help.setBackground(new Color(158, 22, 22));
+        help.setForeground(Color.WHITE);
 
         JMenuItem questionnaire = new JMenuItem("Questionnaire");
+        questionnaire.setBackground(new Color(158, 22, 22));
+        questionnaire.setForeground(Color.WHITE);
 
         questionnaire.addActionListener(new ActionListener() {
             @Override
@@ -536,6 +585,8 @@ public class Gui {
         help.add(questionnaire);
 
         JMenuItem prompt = new JMenuItem("Direct Prompt");
+        prompt.setBackground(new Color(158, 22, 22));
+        prompt.setForeground(Color.WHITE);
 
         prompt.addActionListener(new ActionListener() {
             @Override
@@ -547,6 +598,8 @@ public class Gui {
         help.add(prompt);
 
         JMenuItem faq = new JMenuItem("FAQ's");
+        faq.setBackground(new Color(158, 22, 22));
+        faq.setForeground(Color.WHITE);
 
         faq.addActionListener(new ActionListener() {
             @Override
@@ -565,6 +618,8 @@ public class Gui {
         JMenu userMenu = new JMenu(user.username);
 
         JMenuItem logOut = new JMenuItem("Log Out");
+        logOut.setBackground(new Color(158, 22, 22));
+        logOut.setForeground(Color.WHITE);
 
         logOut.addActionListener(new ActionListener() {
             @Override
@@ -589,14 +644,18 @@ public class Gui {
         calledByFrame.setVisible(false); 
         
         JMenuBar menuBar = createMenuBar(promptFrame);
+        menuBar.setBackground(new Color(158, 22, 22));
+        menuBar.setForeground(Color.WHITE);
         promptFrame.add(menuBar);
         
         JLabel promptLabel1 = new JLabel("Write down a question you would like to ask ChatGPT based on");
         promptLabel1.setBounds(50, 100, 400, 20);
+        promptLabel1.setForeground(Color.WHITE);
         promptFrame.add(promptLabel1);
 
         JLabel promptLabel2 = new JLabel("the information you have filled out");
         promptLabel2.setBounds(50, 120, 400, 20);
+        promptLabel2.setForeground(Color.WHITE);
         promptFrame.add(promptLabel2);
 
         JTextField promptField = new JTextField();
@@ -604,6 +663,9 @@ public class Gui {
         promptFrame.add(promptField);
 
         JButton enter = new JButton("Enter");
+        enter.setBackground(new Color(158, 22, 22));
+        enter.setForeground(Color.WHITE);
+
         enter.setBounds(400, 250, 70, 20);
         promptFrame.add(enter);
 
@@ -617,6 +679,8 @@ public class Gui {
         });
         
         JButton view = new JButton("View Answers");
+        view.setBackground(new Color(158, 22, 22));
+        view.setForeground(Color.WHITE);
         view.setBounds(200, 250, 120, 20);
         promptFrame.add(view);
 
@@ -628,6 +692,8 @@ public class Gui {
         });
 
         JButton back = new JButton("Back");
+        back.setBackground(new Color(158, 22, 22));
+        back.setForeground(Color.WHITE);
         back.setBounds(50, 250, 70, 20);
         promptFrame.add(back);
 
@@ -655,6 +721,7 @@ public class Gui {
         JPanel responsePanel = new JPanel();
         responsePanel.setLayout(null);
         responsePanel.setSize(2048, 2048);
+        responsePanel.setBackground(new Color(51, 51, 51));
         responseFrame.add(responsePanel, BorderLayout.CENTER);
 
         String[] questions = Questions.createQuestionsOnly(Questions.fullQuestions);
@@ -689,12 +756,14 @@ public class Gui {
                 responseLabel.setText(appropriateResponse);
                 responseLabel.setHorizontalAlignment(JLabel.CENTER);
                 responseLabel.setBounds(100, 50, 1000, 600);
-
+                responseLabel.setBackground(new Color(51, 51, 51));
                 responsePanel.add(responseLabel);
 
                 JPanel buttonsPanel = new JPanel(new GridLayout(1,1,20,0));
 
                 JButton back = new JButton("Back");
+                back.setBackground(new Color(158, 22, 22));
+                back.setForeground(Color.WHITE);
                 back.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
