@@ -22,3 +22,4 @@ public class Error {
 //kataskeuasis ERROR gia unit testing an ola ta antikeimena exoun k ta 2 arg
 //run methodos sthn Message na mhn einai null
 //labels se kathe methodo na mhn einai null o builder
+//Barprogress sthn run na kn assert an otnws exei kleisei dld einai false
