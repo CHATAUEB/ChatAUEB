@@ -20,3 +20,4 @@ public class Error {
     static Error wrongPassword = new Error("Wrong Password", "The password you have entered is not correct. Please try again");
 }
 //kataskeuasis ERROR gia unit testing an ola ta antikeimena exoun k ta 2 arg
+//run methodos sthn Message na mhn einai null
