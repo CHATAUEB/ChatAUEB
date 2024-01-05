@@ -6,7 +6,7 @@ import org.junit.Test;
 public class UnitTest {
   
   //QueryBuilder class Unit Test
-   @Test
+    @Test
     public static void testQueryGeneration() {
         String result = QueryBuilder.query(questions, answers, message);
         Assert.assertNotNull("Generated query is null", result);
@@ -14,6 +14,15 @@ public class UnitTest {
                 result.contains(QueryBuilder.TEXT));
         Assert.assertTrue("Generated query does not contain expected question",
                 result.contains(QueryBuilder.DEFAULTQUESTION));
+    }
+
+    @Test
+    public void testQueryWithMessage() {
+        message = "Custom message";
+        String result = QueryBuilder.query(questions, answers, message);
+        Assert.assertNotNull("Generated query is null", result);
+        Assert.assertTrue("Generated query does not contain custom message",
+                result.contains(message));
     }
   
     @Test
