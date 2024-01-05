@@ -24,3 +24,4 @@ public class Error {
 //labels se kathe methodo na mhn einai null o builder
 //Barprogress sthn run na kn assert an otnws exei kleisei dld einai false
 //querybuilder oti exw balei se mia nea methodo sto UnitTest kai telos na ejasfalisw oti sto message uparxei oti xhteite opws se ena panepistomio uparxoun... dwse apantisi... 
+//sthn user kataskeuasti kanw test gia contains
