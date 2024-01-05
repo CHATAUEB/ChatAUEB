@@ -14,7 +14,7 @@ public class QueryBuilder {
                         "Ο μαθητης απαντησε στο παρακατω ερωτηματολογιο οσων αφορα στις προτιμησεις του: ";
 
     //Define a default question for Chatgpt: choose a department based on answers
-    final static String defaultQuestion = "Ποιο τμήμα να διαλέξει ο χρήστης;";
+    final static String DEFAULTQUESTION = "Ποιο τμήμα να διαλέξει ο χρήστης;";
 
     // Constructor method that builds the query
     public static String query(String[] questions,String[] answer,String message) {
@@ -44,7 +44,7 @@ public class QueryBuilder {
         if (message != "") {
             builder.append(message);
         } else {
-            builder.append(defaultQuestion + " ");
+            builder.append(DEFAULTQUESTION + " ");
         }
         
         // Convert the StringBuilder to a String and return it
