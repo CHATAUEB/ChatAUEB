@@ -7,7 +7,7 @@ public class UnitTest {
   
   //QueryBuilder class Unit Test
    @Test
-    public void testQueryGeneration() {
+    public static void testQueryGeneration() {
         String result = QueryBuilder.query(questions, answers, message);
         Assert.assertNotNull("Generated query is null", result);
         Assert.assertTrue("Generated query does not contain expected information",
