@@ -5,13 +5,14 @@ public class ConnectionDB {
     private static final String dbName = "DB55"; // Input your database name
     private static final String dbUser = "G555"; // input user that has access to the database
     private static final String dbPassword = "598f4_304"; // input user's password
-
+    
     public static void download() {
 
         Connection dbcon = null;
         Statement stmt = null;
         ResultSet rs = null;
         ResultSet rs1 = null;
+        
 
         String url = "jdbc:sqlserver://sqlserver.dmst.aueb.gr:1433;"
                 + "databaseName=" + dbName + ";user=" + dbUser + ";password=" + dbPassword
@@ -48,16 +49,13 @@ public class ConnectionDB {
             while (rs.next()) {
                 String username = rs.getString("username");
                 String password = rs.getString("pass");
-                // User(username, password);
-                System.out.printf(username + password);
+                User tempUser =  new User(username, password);
                 Statement stmt2 = dbcon.createStatement();
                 rs1 = stmt2.executeQuery("SELECT * FROM Answers WHERE username='" + username + "'");
                 int i = 0;
                 while (rs1.next()) {
-                    String answer = rs1.getString("answer");
-                    System.out.println(answer);
-                    // User.answer[i] = answer;// eisagwgh apanthswn se pinaka
-
+                    int answerNumber = rs1.getInt("answer");
+                    tempUser.answers[i] = Questions.fullQuestions[i][answerNumber];// eisagwgh apanthswn se pinaka
                     i++;
                 }
             }
@@ -80,7 +78,7 @@ public class ConnectionDB {
     }
 
     // BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-    public static void uploadCred() {
+    public static void uploadCred(User user) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -105,9 +103,9 @@ public class ConnectionDB {
             if (preparedStatement != null) {
                 // Set parameters for the insert (replace with your actual column names and
                 // values)
-                preparedStatement.setString(1, "sss");// vazw to username apo tin klasi user
+                preparedStatement.setString(1, user.username);// vazw to username apo tin klasi user
 
-                preparedStatement.setString(2, "ssssss");// password apo user
+                preparedStatement.setString(2, user.password);// password apo user
 
                 // Execute the insert
                 int rowsAffected = preparedStatement.executeUpdate();
@@ -161,21 +159,26 @@ public class ConnectionDB {
             if (preparedStatement != null) {
                 // Set parameters for the insert (replace with your actual column names and
                 // values)
-                int i = 0;
-                int x = 2;// plithos erwtisewn
-                while (i < x) {
-                    preparedStatement.setString(1, "Stavros");// vazw to username apo tin klasi user
-
-                    preparedStatement.setInt(2, 2);// vazw ton pinaka answer[i]
-                    i++;
-                    int rowsAffected = preparedStatement.executeUpdate();
+                int rowsAffected;
+                int total = 0; 
+                int x = User.answersLength;// plithos erwtisewn
+                int answerNumber = -1;
+                for (int i = 0; i < x; i++) {
+                    preparedStatement.setString(1, user.username);// vazw to username apo tin klasi user
+                    for (int j = 1; j <= Questions.choices; j++) {
+                        if (user.answers[i].equals(Questions.fullQuestions[i][j])) {
+                            answerNumber = j;
+                            break;
+                        }
+                    }
+                    preparedStatement.setInt(2, answerNumber);// vazw ton pinaka answer[i]
+                    
+                    rowsAffected = preparedStatement.executeUpdate();
+                    total++;
                 }
 
-                // Execute the insert
-                int rowsAffected = preparedStatement.executeUpdate(); //isws xriazetai
-
                 // Check the number of rows affected
-                System.out.println("Rows affected: " + rowsAffected);
+                System.out.println("Rows affected: " + total);
             } else {
                 System.out.println("PreparedStatement is null");
             }
@@ -198,6 +201,8 @@ public class ConnectionDB {
     }
 
     public static void main(String[] args) {
+        User.UserList.clear();
+        User.createDefaultUsers();
         download();
     }
 }
