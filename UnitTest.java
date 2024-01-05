@@ -8,7 +8,7 @@ public class UnitTest {
     String[] answers = {"1", "2", "3"};
     String message = "";
   
-  //QueryBuilder class Unit Test
+    //QueryBuilder class Unit Test
     @Test
     public void testQueryGeneration() {
     String result = QueryBuilder.query(questions, answers, message);
