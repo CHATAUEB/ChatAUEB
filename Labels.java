@@ -59,7 +59,7 @@ public class Labels {
         builder.append("<br/>");
         builder.append("Υπεύθυνος για τις κλάσεις του project,υπευθύνος για τη διεπαφή με μοντέλο ΤΝ");
         builder.append("<br/>");
-        builder.append("Μόνιμος Κάτοικος Αμαλιάδας, φίλος του Θάνου");
+        builder.append("Μόνιμος Κάτοικος Βούλας, φίλος του Μανώλη");
         builder.append("<br/>");
         builder.append("<br/>");
         builder.append("Αθανάσιος-Παναγιώτης Σακκάτος(8220132): ");
