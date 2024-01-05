@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -42,20 +43,30 @@ public class Gui {
         createEntryLabel();
         createEntryButtons(); // Call createButtons to add buttons to the frame
 
+        entryFrame.getContentPane().setBackground(Color.WHITE);
         entryFrame.setLayout(null);
         entryFrame.setVisible(true);
     }
 
     public static void createEntryLabel() {
-        JLabel label = new JLabel("Welcome to ChatAUEB.");
-        label.setBounds(10, 10, 480, 100); // Adjusted the width to 480 for centering
-        label.setHorizontalAlignment(JLabel.CENTER); // Center the text
+        JLabel label = new JLabel("Welcome to ");
+        label.setBounds(110, 50, 130, 50); // Adjusted the width to 480 for centering
+        //label.setHorizontalAlignment(JLabel.CENTER); // Center the text
 
         // Set the font to bold
         Font boldFont = new Font(label.getFont().getFontName(), Font.BOLD, 20);
         label.setFont(boldFont);
 
         entryFrame.add(label);
+
+        JLabel label2 = new JLabel("ChatAUEB");
+        label2.setBounds(230, 50, 100, 50);
+        //label2.setHorizontalAlignment(JLabel.CENTER);
+
+        label2.setForeground(new Color(158, 22, 22));
+        label2.setFont(boldFont);
+
+        entryFrame.add(label2);
     }
 
     public static void createEntryButtons() {
@@ -64,6 +75,8 @@ public class Gui {
         // Add buttons for sign up, log in, and change password
         JButton signUpButton = new JButton("Sign Up");
         signUpButton.setBounds(200, labelHeight, 100, 30); // Centered vertically based on label height
+        signUpButton.setBackground(new Color(158, 22, 22));
+        signUpButton.setForeground(Color.WHITE);
         entryFrame.add(signUpButton);
 
         JButton loginButton = new JButton("Log In");
@@ -202,6 +215,7 @@ public class Gui {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(500, 500);
         mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        mainFrame.getContentPane().setBackground(Color.WHITE);
         entryFrame.setVisible(false);
 
         JMenuBar menuBar = createMenuBar(mainFrame);
@@ -213,8 +227,10 @@ public class Gui {
     //Method used to create all the components included in the MenuBar
     public static JMenuBar createMenuBar(JFrame calledByFrame) {
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(new Color(158, 22, 22));
 
         JMenu questionnaire = createQuestionnaireMenu(calledByFrame); //line 209
+        questionnaire.setForeground(Color.WHITE);
         menuBar.add(questionnaire);
 
         JMenu chat = createChatMenu(calledByFrame); //line 238
