@@ -4,11 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class UnitTest {
+    String[] questions = {"One", "Two", "Three"};
+    String[] answers = {"1", "2", "3"};
+    String message = "";
   
   //QueryBuilder class Unit Test
     @Test
-    public static void testQueryGeneration() {
-        String result = QueryBuilder.query(questions, answers, message);
+    public void testQueryGeneration() {
+    String result = QueryBuilder.query(questions, answers, message);
         Assert.assertNotNull("Generated query is null", result);
         Assert.assertTrue("Generated query does not contain expected information",
                 result.contains(QueryBuilder.TEXT));
