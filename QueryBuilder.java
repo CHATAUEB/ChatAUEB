@@ -1,3 +1,8 @@
+/**
+* Class used to construct the query for ChatGPT to process.
+* It contains information about our university, the questionnaire along with the users answers and a prompt from the user or a default question
+*/
+
 public class QueryBuilder {
     
     // Define a constant string for the university information
@@ -16,8 +21,21 @@ public class QueryBuilder {
     //Define a default question for Chatgpt: choose a department based on answers
     final static String defaultQuestion = "Ποιο τμήμα να διαλέξει ο χρήστης;";
 
-    // Constructor method that builds the query
-    public static String query(String[] questions,String[] answer,String message) {
+    /**
+    * Method that utilizes StringBuilder's append method to create one String containing everything that is needed in the query
+    * 
+    * @param questions an array containing the questions of the questionnaire
+    * @see Questions#createQuestionsOnly()
+    *
+    * @param answers an array containing the answers the user gave
+    * @see User#answers
+    * @see Gui#processAnswers()
+    * 
+    * @param message the prompt at the end. If it's "" that means we want to ask the deafult question
+    * @return the full String
+    */
+    
+    public static String query(String[] questions, String[] answers, String message) {
         
         // Initialize a StringBuilder to construct the final message
         StringBuilder builder = new StringBuilder();
@@ -28,7 +46,7 @@ public class QueryBuilder {
         // Append each question and its corresponding answer
         for (int i = 0; i < questions.length; i++) {
             builder.append(questions[i] + " ");
-            builder.append(answer[i] + " ");
+            builder.append(answers[i] + " ");
         }
         
         // Append an additional message if provided
@@ -41,19 +59,6 @@ public class QueryBuilder {
         // Convert the StringBuilder to a String and return it
         String toChat = builder.toString();
         return toChat;
-    }
-
-    public static void main(String args[]) {
-        String[] questions = new String[3];
-        String[] answers = new String[3];
-        String message = "";
-        questions[0] = "One";
-        questions[1] = "Two";
-        questions[2] = "Three";
-        answers[0] = "1";
-        answers[1] = "2";
-        answers[2] = "3";
-        System.out.println(QueryBuilder.query(questions, answers, message));
     }
 }
 
