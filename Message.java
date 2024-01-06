@@ -5,7 +5,6 @@ import java.nio.charset.StandardCharsets;
 
 public class Message {
 
-    // Replace with your actual API key and model name
     private static final String API_KEY = "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";
     private static final String MODEL = "gpt-3.5-turbo";
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
@@ -19,11 +18,10 @@ public class Message {
     }
 
     /**
-     * Sends a user message to the OpenAI GPT-3.5 Turbo API and retrieves the model's response.
-     *
-     * @param message User's input message.
-     * @return Model's response.
-     */
+    * Sends a user message to the OpenAI GPT-3.5 Turbo API and retrieves the model's response.
+    * Synchronized with waitingForResponse()
+    */
+    
     public synchronized void run() {
         try {
             // Create URL object
@@ -67,16 +65,23 @@ public class Message {
     }
 
     /**
-     * Extracts the content from the API response.
-     *
-     * @param response API response in JSON format.
-     * @return Extracted content.
-     */
+    * Extracts the content from the API response.
+    *
+    * @param response API response in JSON format.
+    * @return Extracted content.
+    */
+    
     public static String extractContentFromResponse(String response) {
         int startMarker = response.indexOf("content") + 11;
         int endMarker = response.indexOf("\"", startMarker);
         return response.substring(startMarker, endMarker);
     }
+
+    /**
+    * Method used to slow down the creation of the responseFrame in Gui in order to make sure the response from ChatGPT has been received.
+    * Synchronized with run()
+    * @see Thread#wait()
+    */
 
     public synchronized void waitingForResponse() {
         while (!messageReceived) {
