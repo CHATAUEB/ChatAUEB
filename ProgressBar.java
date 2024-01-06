@@ -2,7 +2,14 @@ import java.awt.Color;
 
 import javax.swing.JProgressBar;
 
+/**
+* A class used to create a progress bar while the user waits for ChatGPT's response
+* @see Gui#openResponseFrame()
+*/
+
 public class ProgressBar extends Thread {
+    
+    //Different messages shown while the bar is filling up
     static String s1 = "Composing the prompt";
     static String s2 = "Sending your message to ChatGPT";
     static String s3 = "Preparing the response";
@@ -18,6 +25,11 @@ public class ProgressBar extends Thread {
 
     public JProgressBar bar;
 
+    /**
+    * Default constructor utilizing the default constructor of the JProgressBar class
+    * @see javax.swing.JProgressBar
+    */
+    
     public ProgressBar() {
         this.bar = new JProgressBar();
         bar.setValue(0);
@@ -26,6 +38,12 @@ public class ProgressBar extends Thread {
         bar.setBackground(Color.WHITE);
         bar.setBounds(568, 382, 400, 100);
     }
+
+    /**
+    * Method used to simulate the filling of the bar
+    * Overrides the run() of the Thread class
+    * @see Thread#run()
+    */
     
     @Override
     public void run() {
@@ -46,6 +64,8 @@ public class ProgressBar extends Thread {
             }
 
             value += 1;
+
+            //Selecting a random integer from 0 to 9 in order to show different messages
             i = (int)(Math.random()*10);
         }
 
