@@ -1,3 +1,7 @@
+/**
+* Class used to create the different texts we want to display in our graphic user interface
+*/
+
 public class Labels {
     
     static String PURPOSE;
@@ -5,6 +9,11 @@ public class Labels {
     static String HELP;
     static String FAQ;
 
+    /**
+    * A method that creates the first label used in the aboutUsFrame of Gui
+    * @see Gui#openAboutUsFrame()
+    */
+    
     public static void createPurpose() {
         StringBuilder builder = new StringBuilder();
         builder.append("<html>");
@@ -21,6 +30,12 @@ public class Labels {
         PURPOSE = builder.toString();
     }
 
+
+    /**
+    * A method that creates the second label used in the aboutUsFrame of Gui
+    * @see Gui#openAboutUsFrame()
+    */
+    
     public static void createTeam() {
         StringBuilder builder = new StringBuilder();
         builder.append("<html>");
@@ -87,6 +102,12 @@ public class Labels {
         TEAM = builder.toString();
     }
 
+
+    /**
+    * A method that creates the label used in the helpFrame of Gui
+    * @see Gui#openHelpFrame()
+    */
+    
     public static void createHelp() {
         StringBuilder builder = new StringBuilder();
         builder.append("<html>");
@@ -129,6 +150,11 @@ public class Labels {
         builder.append("</html>");
         HELP = builder.toString();
     }
+
+    /**
+    * A method that creates the label used in the FAQFrame of Gui
+    * @see Gui#openFAQFrame()
+    */
 
     public static void createFAQ() {
         StringBuilder builder = new StringBuilder();
@@ -186,6 +212,11 @@ public class Labels {
         FAQ = builder.toString();
     }
 
+
+    /**
+    * A method used to initialize all the fields of this class
+    */
+    
     public static void createLabels() {
         createPurpose();
         createTeam();
