@@ -1,8 +1,17 @@
+/**
+* Class used to create the questions of the questionnaire as well as the choices the user has for each questions
+* The two dimensional array fullQuestions contains the questions in each row as well as the choices in each column
+*/
+
 public class Questions {
     public static int questionsLength = User.answersLength;
     public static int choices = 6;
     public static final String[][] fullQuestions = new String[questionsLength][choices + 1];
 
+    /**
+    * Method that initializes the fullQuestions array with our questions and choices
+    */
+    
     public static void createQuestions() {
         fullQuestions[0][0] = "Σε ποια μαθήματα έχετε επιτύχει περισσότερο ή έχετε εκδηλώσει ιδιαίτερο ενδιαφέρον στο λύκειο;";
         fullQuestions[0][1] = "Μαθηματικά";
@@ -131,6 +140,12 @@ public class Questions {
         fullQuestions[17][5] = "";
         fullQuestions[17][6] = "";
     }
+
+    /**
+    * Method that separates the questions from the choices and stores them in a one-dimensional array
+    * @param fullQuestions the array created by createQuestions
+    * @return a one-dimensional String array containing the questions
+    */
 
     public static String[] createQuestionsOnly(String [][] fullQuestions) {
         String[] ret = new String[User.answersLength];
