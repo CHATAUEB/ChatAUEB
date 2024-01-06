@@ -11,8 +11,13 @@ public class User {
     
     protected static ArrayList<User> UserList = new ArrayList<User>(); //list containing all created users
 
-    static User nullUser = new User("", ""); //null User used to show that the connection failed
-    static User guestUser = new User("Guest", "1234");
+    static User nullUser;
+    static User guestUser;
+
+    public static void createDefaultUsers() {
+        nullUser = new User("", ""); //null User used to show that the connection failed
+        guestUser = new User("Guest", "1234");
+    }
 
     //A constructor for users with a username and a password.
     public User(String username, String password) {
@@ -46,7 +51,8 @@ public class User {
             }
             if (!taken) { //If there are no matches, the username is available and thus a User objected is created
                 returnUser = new User(username, password);
-            } 
+                ConnectionDB.uploadCred(returnUser);
+            }
         }
         return returnUser;
     }
