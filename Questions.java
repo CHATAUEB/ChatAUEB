@@ -133,16 +133,8 @@ public class Questions {
     }
 
     public static String[] createQuestionsOnly(String [][] fullQuestions) {
-        
-        // Assertions to check if the input array is not null
-        assert fullQuestions != null : "Input array is null";
         String[] ret = new String[User.answersLength];
-        
         for (int i = 0; i <User.answersLength; i++) {
-
-            // Assertion to check if the question is not null
-            assert fullQuestions[i][0] != null : "Question at index " + i + " is null";
-            
             ret[i] = fullQuestions[i][0];
         }
         return ret;

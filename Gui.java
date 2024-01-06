@@ -369,6 +369,8 @@ public class Gui {
                     for (int j = 1; j < Questions.choices + 1; j++) {
                         if (!(Questions.fullQuestions[i][j].equals(""))) {
                             radioButtons[i][j] = new JRadioButton(Questions.fullQuestions[i][j]);
+                            radioButtons[i][j].setBackground(BLACK);
+                            radioButtons[i][j].setForeground(Color.WHITE);
                             if (radioButtons[i][j].getText().equals(user.answers[i])) {
                                 radioButtons[i][j].setSelected(true);
                             }
@@ -381,6 +383,7 @@ public class Gui {
             }
 
                 JPanel buttonsPanel = new JPanel(new GridLayout(1,2,20,0));
+                buttonsPanel.setBackground(BLACK);
         
                 final JRadioButton[][] tempRadioButtons = radioButtons;
 
@@ -528,7 +531,8 @@ public class Gui {
         promptFrame = new JFrame("CHATAUEB - Direct Prompt");
         promptFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         promptFrame.setSize(500, 500);
-        promptFrame.setLayout(null); 
+        promptFrame.setLayout(null);
+        promptFrame.getContentPane().setBackground(BLACK); 
 
         promptFrame.setVisible(true);
         //calledByFrame.setVisible(false); 

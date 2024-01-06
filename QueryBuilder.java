@@ -14,12 +14,11 @@ public class QueryBuilder {
                         "Ο μαθητης απαντησε στο παρακατω ερωτηματολογιο οσων αφορα στις προτιμησεις του: ";
 
     //Define a default question for Chatgpt: choose a department based on answers
-    final static String DEFAULTQUESTION = "Ποιο τμήμα να διαλέξει ο χρήστης;";
+    final static String defaultQuestion = "Ποιο τμήμα να διαλέξει ο χρήστης;";
 
     // Constructor method that builds the query
     public static String query(String[] questions,String[] answer,String message) {
-
-        assert questions.length == answer.length : "Questions and answers arrays must have the same length";
+        
         // Initialize a StringBuilder to construct the final message
         StringBuilder builder = new StringBuilder();
 
@@ -28,15 +27,7 @@ public class QueryBuilder {
 
         // Append each question and its corresponding answer
         for (int i = 0; i < questions.length; i++) {
-
-            // Assertion to check if the question is not null
-            assert questions[i] != null : "Question at index " + i + " is null";
-            
             builder.append(questions[i] + " ");
-
-            // Assertion to check if the answer is not null
-            assert answer[i] != null : "Answer for question " + questions[i] + " is null";
-            
             builder.append(answer[i] + " ");
         }
         
@@ -44,15 +35,11 @@ public class QueryBuilder {
         if (message != "") {
             builder.append(message);
         } else {
-            builder.append(DEFAULTQUESTION + " ");
+            builder.append(defaultQuestion + " ");
         }
         
         // Convert the StringBuilder to a String and return it
         String toChat = builder.toString();
-
-         // Assertion to check if the resulting string is not null
-        assert toChat != null : "Generated string is null";
-        
         return toChat;
     }
 
@@ -66,12 +53,7 @@ public class QueryBuilder {
         answers[0] = "1";
         answers[1] = "2";
         answers[2] = "3";
-
-        String result = QueryBuilder.query(questions, answers, message);
-         // Assertion to check if the result is not null
-        assert result != null : "Resulting string is null";
-
-        System.out.println(result);
+        System.out.println(QueryBuilder.query(questions, answers, message));
     }
 }
 

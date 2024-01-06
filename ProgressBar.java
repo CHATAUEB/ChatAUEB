@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 import javax.swing.JProgressBar;
 
 public class ProgressBar extends Thread {
@@ -20,6 +22,8 @@ public class ProgressBar extends Thread {
         this.bar = new JProgressBar();
         bar.setValue(0);
         bar.setStringPainted(true);
+        bar.setForeground(new Color(158, 22, 22));
+        bar.setBackground(Color.WHITE);
         bar.setBounds(568, 382, 400, 100);
     }
     
