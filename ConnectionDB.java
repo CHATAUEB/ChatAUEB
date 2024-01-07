@@ -1,3 +1,5 @@
+package chat;
+
 import java.sql.*;
 
 public class ConnectionDB {
@@ -5,14 +7,13 @@ public class ConnectionDB {
     private static final String dbName = "DB55"; // Input your database name
     private static final String dbUser = "G555"; // input user that has access to the database
     private static final String dbPassword = "598f4_304"; // input user's password
-    
+
     public static void download() {
 
         Connection dbcon = null;
         Statement stmt = null;
         ResultSet rs = null;
         ResultSet rs1 = null;
-        
 
         String url = "jdbc:sqlserver://sqlserver.dmst.aueb.gr:1433;"
                 + "databaseName=" + dbName + ";user=" + dbUser + ";password=" + dbPassword
@@ -49,7 +50,7 @@ public class ConnectionDB {
             while (rs.next()) {
                 String username = rs.getString("username");
                 String password = rs.getString("pass");
-                User tempUser =  new User(username, password);
+                User tempUser = new User(username, password);
                 Statement stmt2 = dbcon.createStatement();
                 rs1 = stmt2.executeQuery("SELECT * FROM Answers WHERE username='" + username + "'");
                 int i = 0;
@@ -135,6 +136,9 @@ public class ConnectionDB {
 
     // BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
     public static void updateAns(User user) {
+        if (exists(user)) {
+            deleteANS(user);
+        }
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -160,7 +164,7 @@ public class ConnectionDB {
                 // Set parameters for the insert (replace with your actual column names and
                 // values)
                 int rowsAffected;
-                int total = 0; 
+                int total = 0;
                 int x = User.answersLength;// plithos erwtisewn
                 int answerNumber = -1;
                 for (int i = 0; i < x; i++) {
@@ -172,7 +176,7 @@ public class ConnectionDB {
                         }
                     }
                     preparedStatement.setInt(2, answerNumber);// vazw ton pinaka answer[i]
-                    
+
                     rowsAffected = preparedStatement.executeUpdate();
                     total++;
                 }
@@ -200,9 +204,106 @@ public class ConnectionDB {
         }
     }
 
+    // bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+    public static void deleteANS(User user) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        String url = "jdbc:sqlserver://sqlserver.dmst.aueb.gr:1433;"
+                + "databaseName=" + dbName + ";user=" + dbUser + ";password=" + dbPassword
+                + ";encrypt=true;trustServerCertificate=true;";
+
+        try {
+            // Load the SQLServerDriver class
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+            // Establish a connection
+            connection = DriverManager.getConnection(url);
+
+            // SQL insert statement
+            String insertQuery = "DELETE  FROM answers WHERE username = ?";
+
+            // Create a PreparedStatement with the insert query
+            preparedStatement = connection.prepareStatement(insertQuery);
+
+            // Check if the PreparedStatement is not null
+            if (preparedStatement != null) {
+                // Set parameters for the insert (replace with your actual column names and
+                // values)
+                int rowsAffected;
+                preparedStatement.setString(1, user.username);
+                rowsAffected = preparedStatement.executeUpdate();
+                System.out.println("Rows affected: " + rowsAffected);
+
+            } else {
+                System.out.println("PreparedStatement is null");
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Close the PreparedStatement and Connection
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static Boolean exists(User user) {
+        Connection connection = null;
+        ResultSet rs = null;
+
+        String url = "jdbc:sqlserver://sqlserver.dmst.aueb.gr:1433;"
+                + "databaseName=" + dbName + ";user=" + dbUser + ";password=" + dbPassword
+                + ";encrypt=true;trustServerCertificate=true;";
+
+        try {
+            // Load the SQLServerDriver class
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+            // Establish a connection
+            connection = DriverManager.getConnection(url);
+
+            // SQL insert statement
+            String insertQuery = "SELECT COUNT(*) FROM Answers WHERE username = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+                preparedStatement.setString(1, user.username);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        int count = resultSet.getInt(1);
+                        return count > 0;
+                    }
+                }
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Close the PreparedStatement and Connection
+
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
         User.UserList.clear();
         User.createDefaultUsers();
-        download();
+        User user = new User("eri", "nigga1");
+
+        // deleteANS(user);
     }
 }
