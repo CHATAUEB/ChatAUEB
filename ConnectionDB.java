@@ -178,7 +178,7 @@ public class ConnectionDB {
                     preparedStatement.setInt(2, answerNumber);// vazw ton pinaka answer[i]
 
                     rowsAffected = preparedStatement.executeUpdate();
-                    total++;
+                    total += rowsAffected;
                 }
 
                 // Check the number of rows affected
