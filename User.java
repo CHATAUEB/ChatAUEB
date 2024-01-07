@@ -64,7 +64,7 @@ public class User {
                     //If the username is null that means that tempUser is nullUser and in this iteration nothing should happen
                 } else {
                     if (tempUser.username.equals(username)) { 
-                        taken = true; /
+                        taken = true; 
                         error = Error.usernameTaken;
                         Error.displayError(error, Gui.entryFrame);
                         break; 
@@ -101,7 +101,7 @@ public class User {
                 if (tempUser.username.equals("")) { 
                     //If the username is null that means that tempUser is nullUser and in this iteration nothing should happen
                 } else {
-                    if (tempUser.username.equals(username)) { /
+                    if (tempUser.username.equals(username)) { 
                         if (tempUser.password.equals(password)) {
                             found = true; 
                             returnUser = tempUser;
