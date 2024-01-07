@@ -400,14 +400,18 @@ public class Gui {
                             JDialog dialog = new JDialog();
                             dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
                             dialog.setSize(400, 400);
+                            dialog.getContentPane().setBackground(BLACK);
                             dialog.setLayout(null);
                             dialog.setVisible(true);
 
                             JLabel warning1 = new JLabel("Έχεις απαντήσει σε " + count + " απαντήσεις");
                             JLabel warning2 = new JLabel("Προτείνουμε να απαντήσεις σε περισσότερες από 10 ερωτήσεις");
                             warning1.setBounds(10, 30, 380, 30);
+                            warning1.setBackground(BLACK);
+                            warning1.setForeground(Color.WHITE);
                             warning2.setBounds(10, 60, 380, 30);
-
+                            warning2.setBackground(BLACK);
+                            warning2.setForeground(Color.WHITE);
                             dialog.add(warning1);
                             dialog.add(warning2);
 
@@ -651,6 +655,7 @@ public class Gui {
                 responseLabel.setHorizontalAlignment(JLabel.CENTER);
                 responseLabel.setBounds(100, 50, 1000, 600);
                 responseLabel.setBackground(BLACK);
+                responseLabel.setForeground(Color.WHITE);
                 responsePanel.add(responseLabel);
 
                 JPanel buttonsPanel = new JPanel(new GridLayout(1,1,20,0));
