@@ -1,5 +1,6 @@
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -55,44 +56,49 @@ public class Gui {
 
     public static void createEntryLabel() {
         JLabel label = new JLabel("Welcome to ");
-        label.setBounds(190, 50, 480, 50); // Adjusted the width to 480 for centering
+        label.setBounds(13, 50, 480, 50); // Adjusted the width to 480 for centering
         label.setForeground(Color.WHITE); //White text colour font
-        //label.setHorizontalAlignment(JLabel.CENTER); // Center the text
-
+        label.setHorizontalAlignment(JLabel.CENTER); // Center the text
+        
         // Set the font to bold
         Font boldFont = new Font(label.getFont().getFontName(), Font.BOLD, 20);
         label.setFont(boldFont);
 
         entryFrame.add(label);
 
-        //JLabel label2 = new JLabel("ChatAUEB");
-        //label2.setBounds(230, 50, 100, 50);
-        //label2.setHorizontalAlignment(JLabel.CENTER);
+         // Upload the png
+        ImageIcon image = new ImageIcon("src/CA.png");
+        JLabel label2 = new JLabel();
+        label2.setIcon(image);
+        label2.setBounds(176, 75, 150, 150);
+        label2.setHorizontalAlignment(JLabel.CENTER);
 
         //label2.setForeground(RED);
         //label2.setFont(boldFont);
 
-        //entryFrame.add(label2);
+        entryFrame.add(label2);
     }
 
     public static void createEntryButtons() {
-        int labelHeight = 100; // Height of the label
+        //int labelHeight = 100; // Height of the label
+
+        int labelx = 200; // X of the label
 
         // Add buttons for sign up, log in, and change password
         JButton signUpButton = new JButton("Sign Up");
-        signUpButton.setBounds(200, labelHeight, 100, 30); // Centered vertically based on label height
+        signUpButton.setBounds(labelx - 125, 230, 100, 30); // ALLAGES!!//:X apo 200 se 75,labelheight apo 100 se 230 //Centered vertically based on label height
         signUpButton.setBackground(RED);
         signUpButton.setForeground(Color.WHITE);
         entryFrame.add(signUpButton);
 
         JButton loginButton = new JButton("Log In");
-        loginButton.setBounds(200, labelHeight + 40, 100, 30); // Centered vertically based on label height
+        loginButton.setBounds(labelx, 230, 100, 30); //ALLAGES!!//:label height apo 140 se 230 //Centered vertically based on label height
         loginButton.setBackground(RED);
         loginButton.setForeground(Color.WHITE);
         entryFrame.add(loginButton);
 
         JButton guestButton = new JButton("Enter as a guest");
-        guestButton.setBounds(175, labelHeight + 80, 150, 30);
+        guestButton.setBounds(labelx + 125, 230, 130, 30); //ALLAGES!!//:Width apo 150 se 130,label height apo 180 se 230,x apo 175 se 325
         guestButton.setBackground(RED);
         guestButton.setForeground(Color.WHITE);
         entryFrame.add(guestButton);
