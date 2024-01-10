@@ -47,6 +47,8 @@ public class UnitTest {
         answers = null;
         QueryBuilder.query(questions, answers, message);
     }
+
+    //Unit Testing Questions class
     
     @Test
     public void testCreateQuestionsOnly() {
