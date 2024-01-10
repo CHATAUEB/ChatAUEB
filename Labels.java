@@ -102,7 +102,6 @@ public class Labels {
         TEAM = builder.toString();
     }
 
-
     /**
     * A method that creates the label used in the helpFrame of Gui
     * @see Gui#openHelpFrame()
@@ -212,7 +211,6 @@ public class Labels {
         FAQ = builder.toString();
     }
 
-
     /**
     * A method used to initialize all the fields of this class
     */
@@ -223,8 +221,4 @@ public class Labels {
         createHelp();
         createFAQ();
     }
-
-    
-
-    
 }
