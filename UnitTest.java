@@ -162,6 +162,49 @@ public class UnitTest {
         assertEquals("Done", progressBar.bar.getString());
 
     }
+
+    //Unit Test Labels class
+    
+    @Test
+    public void testCreatePurpose() {
+        Labels.createPurpose();
+        Assert.assertNotNull("Purpose label is null", Labels.PURPOSE);
+        Assert.assertTrue("Purpose label is empty", Labels.PURPOSE.trim().length() > 0);
+    }
+
+    @Test
+    public void testCreateTeam() {
+        Labels.createTeam();
+        Assert.assertNotNull("Team label is null", Labels.TEAM);
+        Assert.assertTrue("Team label is empty", Labels.TEAM.trim().length() > 0);
+    }
+
+    @Test
+    public void testCreateHelp() {
+        Labels.createHelp();
+        Assert.assertNotNull("Help label is null", Labels.HELP);
+        Assert.assertTrue("Help label is empty", Labels.HELP.trim().length() > 0);
+    }
+
+    @Test
+    public void testCreateFAQ() {
+        Labels.createFAQ();
+        Assert.assertNotNull("FAQ label is null", Labels.FAQ);
+        Assert.assertTrue("FAQ label is empty", Labels.FAQ.trim().length() > 0);
+    }
+
+    @Test
+    public void testCreateLabels() {
+        Labels.createLabels();
+        Assert.assertNotNull("Purpose label is null", Labels.PURPOSE);
+        Assert.assertNotNull("Team label is null", Labels.TEAM);
+        Assert.assertNotNull("Help label is null", Labels.HELP);
+        Assert.assertNotNull("FAQ label is null", Labels.FAQ);
+        Assert.assertTrue("Purpose label is empty", Labels.PURPOSE.trim().length() > 0);
+        Assert.assertTrue("Team label is empty", Labels.TEAM.trim().length() > 0);
+        Assert.assertTrue("Help label is empty", Labels.HELP.trim().length() > 0);
+        Assert.assertTrue("FAQ label is empty", Labels.FAQ.trim().length() > 0);
+    }
     
     /*
     Epomenes klaseis
