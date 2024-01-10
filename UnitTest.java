@@ -205,6 +205,18 @@ public class UnitTest {
         Assert.assertTrue("Help label is empty", Labels.HELP.trim().length() > 0);
         Assert.assertTrue("FAQ label is empty", Labels.FAQ.trim().length() > 0);
     }
+
+    @Test
+    public void testMessage() {
+        
+        String userMessage = "Test message";
+        Message message = new Message(userMessage);
+
+        message.run(); // Sending the message to OpenAI API
+
+        message.waitingForResponse(); // Wait for the response to be received
+        assertNotNull(Message.retResponse); // Ensure that the response is not null
+    }
     
     /*
     Epomenes klaseis
