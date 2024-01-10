@@ -47,5 +47,19 @@ public class UnitTest {
         answers = null;
         QueryBuilder.query(questions, answers, message);
     }
+    
+    @Test
+    public void testCreateQuestionsOnly() {
+        // Arrange
+        Questions.createQuestions(); // Initialize questions in fullQuestions array
+
+        // Act
+        String[] questionsOnly = Questions.createQuestionsOnly(Questions.fullQuestions);
+
+        // Assert
+        Assert.assertNotNull(questionsOnly);
+        Assert.assertEquals(User.answersLength, questionsOnly.length);
+
+    }
 
 }
