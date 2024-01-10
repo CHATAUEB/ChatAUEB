@@ -162,5 +162,32 @@ public class UnitTest {
         assertEquals("Done", progressBar.bar.getString());
 
     }
+    
+    /*
+    Epomenes klaseis
+    */
 
+    private void executeTests() {
+        UnitTest unitTest = new UnitTest();
+
+        // QueryBuilder class Unit Test
+        unitTest.testQueryGeneration();
+        unitTest.testQueryWithMessage();
+        unitTest.testMismatchedLengths();
+        unitTest.testNullQuestions();
+        unitTest.testNullAnswers();
+
+        // Unit Testing Questions class
+        unitTest.testCreateQuestionsOnly();
+
+        // Unit Testing User class
+        unitTest.testCreateDefaultUsers();
+        unitTest.testSignUp();
+        unitTest.testLogIn();
+        unitTest.testClearAnswers();
+        unitTest.testCountAnswers();
+
+        // Unit Testing class ProgressBar
+        unitTest.testProgressBar();
+    }
 }
