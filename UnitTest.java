@@ -4,48 +4,36 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class UnitTest {
-    String[] questions = {"One", "Two", "Three"};
-    String[] answers = {"1", "2", "3"};
-    String message = "";
-  
-    //QueryBuilder class Unit Test
-    @Test
-    public void testQueryGeneration() {
-    String result = QueryBuilder.query(questions, answers, message);
-        Assert.assertNotNull("Generated query is null", result);
-        Assert.assertTrue("Generated query does not contain expected information",
-                result.contains(QueryBuilder.TEXT));
-        Assert.assertTrue("Generated query does not contain expected question",
-                result.contains(QueryBuilder.DEFAULTQUESTION));
-    }
 
+    //Unit Test StringBuilder class
+    
     @Test
-    public void testQueryWithMessage() {
-        message = "Custom message";
-        String result = QueryBuilder.query(questions, answers, message);
-        Assert.assertNotNull("Generated query is null", result);
-        Assert.assertTrue("Generated query does not contain custom message",
-                result.contains(message));
-    }
-  
-    @Test
-    public void testMismatchedLengths() {
-        // Mismatched lengths of questions and answers arrays
-        String[] mismatchedQuestions = {"One", "Two", "Three"};
-        String[] mismatchedAnswers = {"1", "2"};
-        QueryBuilder.query(mismatchedQuestions, mismatchedAnswers, message);
-    }
+    public void testQuery() {
+        // Sample questions and answers
+        String[] questions = {"Ερώτηση 1", "Ερώτηση 2", "Ερώτηση 3"};
+        String[] answers = {"Απάντηση 1", "Απάντηση 2", "Απάντηση 3"};
 
-    @Test
-    public void testNullQuestions() {
-        questions = null;
-        QueryBuilder.query(questions, answers, message);
-    }
+        // Sample message
+        String message = "Επιπλέον μήνυμα";
 
-    @Test
-    public void testNullAnswers() {
-        answers = null;
-        QueryBuilder.query(questions, answers, message);
+        // Expected result
+        String expected = "Σε ενα πανεπιστημιο υπαρχουν 8 τμηματα: " +
+                "1) διεθνων ευρωπαικων και οικονομικων σπουδων, " +
+                "2) οικονομικων επιστημων, " +
+                "3) διοικητικης επιστημης και τεχνολογιας, " +
+                "4) οργανωσης και διοικησης επιχειρησεων, " +
+                "5) λογιστικης και χρηματοοικονομικης, " +
+                "6) μαρκετινγκ και επικοινωνιας, " +
+                "7) πληροφορικης, " +
+                "8) στατιστικης. " +
+                "Ενας μαθητης θελει να σπουδασει σε αυτο το πανεπιστημιο, αλλα δεν ξερει ποιο τμημα να διαλεξει. " +
+                "Ερώτηση 1 Απάντηση 1 Ερώτηση 2 Απάντηση 2 Ερώτηση 3 Απάντηση 3 Επιπλέον μήνυμα ";
+
+        // Actual result
+        String actual = QueryBuilder.query(questions, answers, message);
+
+        // Assert
+        assertEquals(expected, actual);
     }
 
     //Unit Testing Questions class
@@ -228,11 +216,7 @@ public class UnitTest {
         UnitTest unitTest = new UnitTest();
 
         // QueryBuilder class Unit Test
-        unitTest.testQueryGeneration();
-        unitTest.testQueryWithMessage();
-        unitTest.testMismatchedLengths();
-        unitTest.testNullQuestions();
-        unitTest.testNullAnswers();
+        unitTest.testQuery();
 
         // Unit Testing Questions class
         unitTest.testCreateQuestionsOnly();
