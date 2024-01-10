@@ -136,4 +136,31 @@ public class UnitTest {
         assertEquals(0, new User("emptyUser", "emptyPassword").countAnswers());
     }
 
+    //Unit Testing class ProgressBar
+    
+    @Test
+    public void testProgressBar() {
+        ProgressBar progressBar = new ProgressBar();
+        
+        // Set the initial value to 0 and ensure it is set correctly
+        assertEquals(0, progressBar.bar.getValue());
+
+        // Run the thread to simulate the progress bar filling up
+        progressBar.start();
+
+        // Sleep for a while to allow the progress bar to fill up (adjust as needed)
+        try {
+            Thread.sleep(1000); // Adjust the time depending on your needs
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Ensure that the progress bar value reaches 100
+        assertEquals(100, progressBar.bar.getValue());
+
+        // Ensure that the final message is set to "Done"
+        assertEquals("Done", progressBar.bar.getString());
+
+    }
+
 }
