@@ -64,4 +64,76 @@ public class UnitTest {
 
     }
 
+    //Unit Testing User class
+
+    @Test
+    public void testCreateDefaultUsers() {
+        User.createDefaultUsers();
+        assertNotNull(User.nullUser);
+        assertNotNull(User.guestUser);
+    }
+
+    @Test
+    public void testSignUp() {
+        User.createDefaultUsers();
+
+        // Test signing up with invalid credentials
+        assertEquals(User.nullUser, User.signUp("", ""));
+        assertEquals(User.nullUser, User.signUp("validUsername", ""));
+
+        // Test signing up with a taken username
+        User existingUser = new User("existingUser", "password");
+        assertEquals(User.nullUser, User.signUp("existingUser", "newPassword"));
+
+        // Test successful sign up
+        User newUser = User.signUp("newUser", "newPassword");
+        assertEquals("newUser", newUser.username);
+        assertEquals("newPassword", newUser.password);
+        assertEquals(newUser, User.logIn("newUser", "newPassword"));
+    }
+
+    @Test
+    public void testLogIn() {
+        User.createDefaultUsers();
+
+        // Test login with invalid credentials
+        assertEquals(User.nullUser, User.logIn("", ""));
+        assertEquals(User.nullUser, User.logIn("validUsername", ""));
+
+        // Test login with non-existing username
+        assertEquals(User.nullUser, User.logIn("nonExistingUser", "password"));
+
+        // Test login with wrong password
+        User existingUser = new User("existingUser", "password");
+        assertEquals(User.nullUser, User.logIn("existingUser", "wrongPassword"));
+
+        // Test successful login
+        assertEquals(existingUser, User.logIn("existingUser", "password"));
+    }
+
+    @Test
+    public void testClearAnswers() {
+        User user = new User("testUser", "testPassword");
+        user.answers[0] = "answer1";
+        user.answers[1] = "answer2";
+
+        user.clearAnswers();
+
+        for (String answer : user.answers) {
+            assertEquals("", answer);
+        }
+    }
+
+    @Test
+    public void testCountAnswers() {
+        User user = new User("testUser", "testPassword");
+        user.answers[0] = "answer1";
+        user.answers[2] = "answer2";
+
+        assertEquals(2, user.countAnswers());
+
+        // Test with no answers
+        assertEquals(0, new User("emptyUser", "emptyPassword").countAnswers());
+    }
+
 }
