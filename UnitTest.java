@@ -206,6 +206,8 @@ public class UnitTest {
         Assert.assertTrue("FAQ label is empty", Labels.FAQ.trim().length() > 0);
     }
 
+    //Unit Test Message class
+    
     @Test
     public void testMessage() {
         
