@@ -230,5 +230,15 @@ public class UnitTest {
 
         // Unit Testing class ProgressBar
         unitTest.testProgressBar();
+
+        //Unit Test Labels class
+        unitTest.testCreatePurpose();
+        unitTest.testCreateTeam();
+        unitTest.testCreateHelp();
+        unitTest.testCreateFAQ();
+        unitTest.testCreateLabels();
+            
+        //Unit Test Message class
+        unitTest.testMessage();
     }
 }
