@@ -246,9 +246,37 @@ public class Gui {
 
         JMenuBar menuBar = createMenuBar(mainFrame);
         mainFrame.setJMenuBar(menuBar);
-
-        mainFrame.setVisible(true);        
+        mainFrame.setVisible(true);
+        mainFrame.add(createMainLabelPhoto()); 
+       //mainFrame.add(createMainLabelText());  
     }
+
+    //Method used to import png(photo of university) on the main frame
+
+    public static JLabel createMainLabelPhoto() {
+
+        ImageIcon image = new ImageIcon("src/Μαράσλειο_Μέγαρο_9723.jpg");
+        JLabel label = new JLabel();
+        label.setIcon(image);
+        label.setBounds(500, 30, 1000, 1000);
+        label.setHorizontalAlignment(JLabel.CENTER);  
+        return label;   
+    }
+
+    public static JLabel createMainLabelText() {
+
+        JLabel label = new JLabel("ChatAUEB : Ο επαγγελματικός οδηγός του Οικονομικού Πανεπιστημίου Αθηνών.");
+        label.setBounds(500, 500, 480, 50); // Adjusted the width to 480 for centering
+        label.setForeground(Color.WHITE); //White text colour font
+        label.setHorizontalAlignment(JLabel.CENTER); // Center the text
+        
+        // Set the font to bold
+        Font boldFont = new Font(label.getFont().getFontName(), Font.BOLD, 20);
+        label.setFont(boldFont);
+        return label;
+    }
+
+    
     
     //Method used to create all the components included in the MenuBar
     public static JMenuBar createMenuBar(JFrame calledByFrame) {
