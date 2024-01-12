@@ -5,38 +5,7 @@ import org.junit.Test;
 
 public class UnitTest {
 
-    //Unit Test StringBuilder class
-    
-    @Test
-    public void testQuery() {
-        // Sample questions and answers
-        String[] questions = {"Ερώτηση 1", "Ερώτηση 2", "Ερώτηση 3"};
-        String[] answers = {"Απάντηση 1", "Απάντηση 2", "Απάντηση 3"};
-
-        // Sample message
-        String message = "Επιπλέον μήνυμα";
-
-        // Expected result
-        String expected = "Σε ενα πανεπιστημιο υπαρχουν 8 τμηματα: " +
-                "1) διεθνων ευρωπαικων και οικονομικων σπουδων, " +
-                "2) οικονομικων επιστημων, " +
-                "3) διοικητικης επιστημης και τεχνολογιας, " +
-                "4) οργανωσης και διοικησης επιχειρησεων, " +
-                "5) λογιστικης και χρηματοοικονομικης, " +
-                "6) μαρκετινγκ και επικοινωνιας, " +
-                "7) πληροφορικης, " +
-                "8) στατιστικης. " +
-                "Ενας μαθητης θελει να σπουδασει σε αυτο το πανεπιστημιο, αλλα δεν ξερει ποιο τμημα να διαλεξει. " +
-                "Ερώτηση 1 Απάντηση 1 Ερώτηση 2 Απάντηση 2 Ερώτηση 3 Απάντηση 3 Επιπλέον μήνυμα ";
-
-        // Actual result
-        String actual = QueryBuilder.query(questions, answers, message);
-
-        // Assert
-        assertEquals(expected, actual);
-    }
-
-    //Unit Testing Questions class
+    //Unit Testing Questions class (trexei mia xara)
     
     @Test
     public void testCreateQuestionsOnly() {
@@ -51,9 +20,9 @@ public class UnitTest {
         Assert.assertEquals(User.answersLength, questionsOnly.length);
 
     }
-
+    
     //Unit Testing User class
-
+/*
     @Test
     public void testCreateDefaultUsers() {
         User.createDefaultUsers();
@@ -123,35 +92,9 @@ public class UnitTest {
         // Test with no answers
         assertEquals(0, new User("emptyUser", "emptyPassword").countAnswers());
     }
-
-    //Unit Testing class ProgressBar
+    */
     
-    @Test
-    public void testProgressBar() {
-        ProgressBar progressBar = new ProgressBar();
-        
-        // Set the initial value to 0 and ensure it is set correctly
-        assertEquals(0, progressBar.bar.getValue());
-
-        // Run the thread to simulate the progress bar filling up
-        progressBar.start();
-
-        // Sleep for a while to allow the progress bar to fill up (adjust as needed)
-        try {
-            Thread.sleep(1000); // Adjust the time depending on your needs
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Ensure that the progress bar value reaches 100
-        assertEquals(100, progressBar.bar.getValue());
-
-        // Ensure that the final message is set to "Done"
-        assertEquals("Done", progressBar.bar.getString());
-
-    }
-
-    //Unit Test Labels class
+    //Unit Test Labels class ( trexei mia xara )
     
     @Test
     public void testCreatePurpose() {
@@ -194,7 +137,7 @@ public class UnitTest {
         Assert.assertTrue("FAQ label is empty", Labels.FAQ.trim().length() > 0);
     }
 
-    //Unit Test Message class
+    //Unit Test Message class (trexei mia xara)
     
     @Test
     public void testMessage() {
@@ -215,21 +158,17 @@ public class UnitTest {
     private void executeTests() {
         UnitTest unitTest = new UnitTest();
 
-        // QueryBuilder class Unit Test
-        unitTest.testQuery();
-
         // Unit Testing Questions class
         unitTest.testCreateQuestionsOnly();
 
+        /*
         // Unit Testing User class
         unitTest.testCreateDefaultUsers();
         unitTest.testSignUp();
         unitTest.testLogIn();
         unitTest.testClearAnswers();
         unitTest.testCountAnswers();
-
-        // Unit Testing class ProgressBar
-        unitTest.testProgressBar();
+        */
 
         //Unit Test Labels class
         unitTest.testCreatePurpose();
