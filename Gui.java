@@ -29,11 +29,14 @@ public class Gui {
     public static JDialog credentials;
     public static JFrame mainFrame;
     public static JFrame questionnaireFrame;
+    public static JDialog warningDialog;
     public static JFrame promptFrame;
     public static JFrame aboutUsFrame;
     public static JFrame helpFrame;
     public static JFrame FAQFrame;
     public static JFrame responseFrame;
+
+    public static JFrame calledBy;
 
     private static User user;
 
@@ -290,6 +293,8 @@ public class Gui {
         questionnaire.setBackground(RED);
         questionnaire.setForeground(Color.WHITE);
 
+        calledBy = calledByFrame;
+
         JMenuItem answer = new JMenuItem("Fill in questionnaire");
         answer.setBackground(RED);
         answer.setForeground(Color.WHITE);
@@ -302,7 +307,7 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 openQuestionnaireFrame(1);
-                calledByFrame.dispose();
+                calledBy.dispose();
             }
         });
 
@@ -310,7 +315,7 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 openQuestionnaireFrame(2);
-                calledByFrame.dispose();
+                calledBy.dispose();
             }
         });
 
@@ -407,12 +412,12 @@ public class Gui {
                         processAnswers(tempRadioButtons);
                         int count = user.countAnswers();
                         if (count < 10) {
-                            JDialog dialog = new JDialog();
-                            dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-                            dialog.setSize(400, 400);
-                            dialog.getContentPane().setBackground(BLACK);
-                            dialog.setLayout(null);
-                            dialog.setVisible(true);
+                            warningDialog = new JDialog();
+                            warningDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+                            warningDialog.setSize(400, 400);
+                            warningDialog.getContentPane().setBackground(BLACK);
+                            warningDialog.setLayout(null);
+                            warningDialog.setVisible(true);
 
                             JLabel warning1 = new JLabel("Έχεις απαντήσει σε " + count + " απαντήσεις");
                             JLabel warning2 = new JLabel("Προτείνουμε να απαντήσεις σε περισσότερες από 10 ερωτήσεις");
@@ -422,8 +427,8 @@ public class Gui {
                             warning2.setBounds(10, 60, 380, 30);
                             warning2.setBackground(BLACK);
                             warning2.setForeground(Color.WHITE);
-                            dialog.add(warning1);
-                            dialog.add(warning2);
+                            warningDialog.add(warning1);
+                            warningDialog.add(warning2);
 
                             JButton back = new JButton("Back");
                             back.setBackground(RED);
@@ -432,11 +437,11 @@ public class Gui {
                             back.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    dialog.dispose();
+                                    warningDialog.dispose();
                                 }
                             });
                             back.setBounds(10, 240, 150, 30);
-                            dialog.add(back);
+                            warningDialog.add(back);
 
                             JButton cont = new JButton("Continue Anyway");
                             cont.setBackground(RED);
@@ -445,13 +450,13 @@ public class Gui {
                             cont.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    dialog.dispose();
+                                    warningDialog.dispose();
                                     questionnaireFrame.dispose();
                                     openResponseFrame("");
                                 }
                             });
                             cont.setBounds(230, 240, 150, 30);
-                            dialog.add(cont);
+                            warningDialog.add(cont);
                 
                         } else {
                             questionnaireFrame.dispose();
@@ -529,10 +534,12 @@ public class Gui {
         prompt.setBackground(RED);
         prompt.setForeground(Color.WHITE);
 
+        calledBy = calledByFrame;
+
         prompt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openPromptFrame(calledByFrame);
+                openPromptFrame(calledBy);
             }
         });
 
@@ -580,9 +587,7 @@ public class Gui {
         enter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String prompt = promptField.getText();
-                promptFrame.dispose();
-                openResponseFrame(prompt);
+                promptFrameEntryPressed(promptField);
             }
         });
         
@@ -605,13 +610,21 @@ public class Gui {
         back.setBounds(50, 250, 70, 20);
         promptFrame.add(back);
 
+        calledBy = calledByFrame;
+
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 promptFrame.dispose();
-                calledByFrame.setVisible(true);
+                calledBy.setVisible(true);
             }
         });
+    }
+
+    public static void promptFrameEntryPressed(JTextField promptField) {
+        String prompt = promptField.getText();
+        promptFrame.dispose();
+        openResponseFrame(prompt);
     }
 
     public static void openResponseFrame(String prompt) {        
