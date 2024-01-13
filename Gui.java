@@ -187,11 +187,13 @@ public class Gui {
         credentials.add(enter); 
 
         enter.addActionListener(new ActionListener() {
+            int action1 = action;
+            JTextField userText1 = userText;
+            JPasswordField passText1 = passText;
             @Override
             public void actionPerformed(ActionEvent e) {
-                entryFrameEnterPressed(action, userText, passText);
+                entryFrameEnterPressed(action1, userText1, passText1);
             }
-
         });
 
         //Button used to go back to the entry frame
