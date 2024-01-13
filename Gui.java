@@ -587,9 +587,10 @@ public class Gui {
         promptFrame.add(enter);
 
         enter.addActionListener(new ActionListener() {
+            JTextField promptField1 = promptField;
             @Override
             public void actionPerformed(ActionEvent e) {
-                promptFrameEntryPressed(promptField);
+                promptFrameEntryPressed(promptField1);
             }
         });
         
