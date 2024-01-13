@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 public class Gui {
 
     public static JFrame entryFrame;
+    public static JDialog credentials;
     public static JFrame mainFrame;
     public static JFrame questionnaireFrame;
     public static JFrame promptFrame;
@@ -67,7 +68,7 @@ public class Gui {
         entryFrame.add(label);
 
          // Upload the png
-        ImageIcon image = new ImageIcon("src/CA.png");
+        ImageIcon image = new ImageIcon("src/ChatAUEB.png");
         JLabel label2 = new JLabel();
         label2.setIcon(image);
         label2.setBounds(176, 75, 150, 150);
@@ -132,7 +133,7 @@ public class Gui {
 
     public static void createCredentialsDialog(int action) {
         //Creates the dialog used for credentials verification
-        JDialog credentials = new JDialog();
+        credentials = new JDialog();
         credentials.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         credentials.setSize(300, 300);
         credentials.getContentPane().setBackground(BLACK);
@@ -148,7 +149,6 @@ public class Gui {
         JLabel userLabel = new JLabel("Username: ");
         userLabel.setBounds(100, 70, 100, 20);
         userLabel.setForeground(Color.WHITE);
-
 
         JTextField userText = new JTextField(30);
         userText.setBounds(100, 90, 100, 20);
@@ -186,34 +186,7 @@ public class Gui {
         enter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = userText.getText(); //When the enter button is pressed the credentials entered by the user are retrieved 
-                String password = new String(passText.getPassword());
-                switch (action) {
-                    case 1 : //The dialog was called from the signUp button
-                        user = User.signUp(username, password); //Creating a User Object using the method signUp()
-                        if (!user.equals(User.nullUser)) { //If the registration was successful
-                            openMainFrame(); //Open the main frame with the User Object
-                            credentials.dispose(); //Close the credentials dialog
-                            entryFrame.dispose(); //Close the entry frame
-                            break;
-                        } else { //The registration was not successful
-                            credentials.dispose(); //Close the credentials dialog
-                            createCredentialsDialog(1); //Open the credentials dialog again
-                            break;
-                        }
-                    case 2 : //The dialog was called from the logIn button
-                        user = User.logIn(username, password); //Creating a User Object using the method logIn()
-                        if (!user.equals(User.nullUser)) { //If the connection was successful
-                            openMainFrame(); //Open the main frame with the User Object
-                            credentials.dispose(); //Close the credentials dialog
-                            entryFrame.dispose(); //Close the entry frame
-                            break;
-                        } else { //If the connection was not successful
-                            credentials.dispose(); //Close the credentials dialog
-                            createCredentialsDialog(2); //Open the credentials dialog again
-                            break;
-                        }
-                }
+                entryFrameEnterPressed(action, userText, passText);
             }
 
         });
@@ -235,6 +208,37 @@ public class Gui {
 
     }
 
+    public static void entryFrameEnterPressed(int action, JTextField userText, JPasswordField passText) {
+        String username = userText.getText(); 
+        String password = new String(passText.getPassword());
+                switch (action) {
+                    case 1 : 
+                        user = User.signUp(username, password); 
+                        if (!user.equals(User.nullUser)) { 
+                            openMainFrame(); 
+                            credentials.dispose(); 
+                            entryFrame.dispose(); 
+                            break;
+                        } else { 
+                            credentials.dispose(); 
+                            createCredentialsDialog(1);
+                            break;
+                        }
+                    case 2 :
+                        user = User.logIn(username, password); 
+                        if (!user.equals(User.nullUser)) { 
+                            openMainFrame(); 
+                            credentials.dispose(); 
+                            entryFrame.dispose(); 
+                            break;
+                        } else { 
+                            credentials.dispose(); 
+                            createCredentialsDialog(2); 
+                            break;
+                        }
+                }
+    }
+
     //The main frame for the application. It contains a menu bar with all the options for the user. 
     public static void openMainFrame() {
         mainFrame = new JFrame("ChatAUEB - Menu");
@@ -246,37 +250,9 @@ public class Gui {
 
         JMenuBar menuBar = createMenuBar(mainFrame);
         mainFrame.setJMenuBar(menuBar);
-        mainFrame.setVisible(true);
-        mainFrame.add(createMainLabelPhoto()); 
-       //mainFrame.add(createMainLabelText());  
+
+        mainFrame.setVisible(true);        
     }
-
-    //Method used to import png(photo of university) on the main frame
-
-    public static JLabel createMainLabelPhoto() {
-
-        ImageIcon image = new ImageIcon("src/Μαράσλειο_Μέγαρο_9723.jpg");
-        JLabel label = new JLabel();
-        label.setIcon(image);
-        label.setBounds(500, 30, 1000, 1000);
-        label.setHorizontalAlignment(JLabel.CENTER);  
-        return label;   
-    }
-
-    public static JLabel createMainLabelText() {
-
-        JLabel label = new JLabel("ChatAUEB : Ο επαγγελματικός οδηγός του Οικονομικού Πανεπιστημίου Αθηνών.");
-        label.setBounds(500, 500, 480, 50); // Adjusted the width to 480 for centering
-        label.setForeground(Color.WHITE); //White text colour font
-        label.setHorizontalAlignment(JLabel.CENTER); // Center the text
-        
-        // Set the font to bold
-        Font boldFont = new Font(label.getFont().getFontName(), Font.BOLD, 20);
-        label.setFont(boldFont);
-        return label;
-    }
-
-    
     
     //Method used to create all the components included in the MenuBar
     public static JMenuBar createMenuBar(JFrame calledByFrame) {
