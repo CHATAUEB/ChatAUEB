@@ -1,2 +1,2 @@
 # ChatAUEB
-The main repository for adding pieces of code
+1 ΟΔΗΓΙΕΣ ΜΕΤΑΓΛΩΤΙΣΗΣ 
