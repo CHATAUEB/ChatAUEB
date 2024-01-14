@@ -26,17 +26,13 @@ import java.awt.event.ActionListener;
 public class Gui {
 
     public static JFrame entryFrame;
-    public static JDialog credentials;
     public static JFrame mainFrame;
     public static JFrame questionnaireFrame;
-    public static JDialog warningDialog;
     public static JFrame promptFrame;
     public static JFrame aboutUsFrame;
     public static JFrame helpFrame;
     public static JFrame FAQFrame;
     public static JFrame responseFrame;
-
-    public static JFrame calledBy;
 
     private static User user;
 
@@ -71,7 +67,7 @@ public class Gui {
         entryFrame.add(label);
 
          // Upload the png
-        ImageIcon image = new ImageIcon("src/ChatAUEB.png");
+        ImageIcon image = new ImageIcon("src/CA.png");
         JLabel label2 = new JLabel();
         label2.setIcon(image);
         label2.setBounds(176, 75, 150, 150);
@@ -136,7 +132,7 @@ public class Gui {
 
     public static void createCredentialsDialog(int action) {
         //Creates the dialog used for credentials verification
-        credentials = new JDialog();
+        JDialog credentials = new JDialog();
         credentials.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         credentials.setSize(300, 300);
         credentials.getContentPane().setBackground(BLACK);
@@ -152,6 +148,7 @@ public class Gui {
         JLabel userLabel = new JLabel("Username: ");
         userLabel.setBounds(100, 70, 100, 20);
         userLabel.setForeground(Color.WHITE);
+
 
         JTextField userText = new JTextField(30);
         userText.setBounds(100, 90, 100, 20);
@@ -187,13 +184,38 @@ public class Gui {
         credentials.add(enter); 
 
         enter.addActionListener(new ActionListener() {
-            int action1 = action;
-            JTextField userText1 = userText;
-            JPasswordField passText1 = passText;
             @Override
             public void actionPerformed(ActionEvent e) {
-                entryFrameEnterPressed(action1, userText1, passText1);
+                String username = userText.getText(); //When the enter button is pressed the credentials entered by the user are retrieved 
+                String password = new String(passText.getPassword());
+                switch (action) {
+                    case 1 : //The dialog was called from the signUp button
+                        user = User.signUp(username, password); //Creating a User Object using the method signUp()
+                        if (!user.equals(User.nullUser)) { //If the registration was successful
+                            openMainFrame(); //Open the main frame with the User Object
+                            credentials.dispose(); //Close the credentials dialog
+                            entryFrame.dispose(); //Close the entry frame
+                            break;
+                        } else { //The registration was not successful
+                            credentials.dispose(); //Close the credentials dialog
+                            createCredentialsDialog(1); //Open the credentials dialog again
+                            break;
+                        }
+                    case 2 : //The dialog was called from the logIn button
+                        user = User.logIn(username, password); //Creating a User Object using the method logIn()
+                        if (!user.equals(User.nullUser)) { //If the connection was successful
+                            openMainFrame(); //Open the main frame with the User Object
+                            credentials.dispose(); //Close the credentials dialog
+                            entryFrame.dispose(); //Close the entry frame
+                            break;
+                        } else { //If the connection was not successful
+                            credentials.dispose(); //Close the credentials dialog
+                            createCredentialsDialog(2); //Open the credentials dialog again
+                            break;
+                        }
+                }
             }
+
         });
 
         //Button used to go back to the entry frame
@@ -213,37 +235,6 @@ public class Gui {
 
     }
 
-    public static void entryFrameEnterPressed(int action, JTextField userText, JPasswordField passText) {
-        String username = userText.getText(); 
-        String password = new String(passText.getPassword());
-                switch (action) {
-                    case 1 : 
-                        user = User.signUp(username, password); 
-                        if (!user.equals(User.nullUser)) { 
-                            openMainFrame(); 
-                            credentials.dispose(); 
-                            entryFrame.dispose(); 
-                            break;
-                        } else { 
-                            credentials.dispose(); 
-                            createCredentialsDialog(1);
-                            break;
-                        }
-                    case 2 :
-                        user = User.logIn(username, password); 
-                        if (!user.equals(User.nullUser)) { 
-                            openMainFrame(); 
-                            credentials.dispose(); 
-                            entryFrame.dispose(); 
-                            break;
-                        } else { 
-                            credentials.dispose(); 
-                            createCredentialsDialog(2); 
-                            break;
-                        }
-                }
-    }
-
     //The main frame for the application. It contains a menu bar with all the options for the user. 
     public static void openMainFrame() {
         mainFrame = new JFrame("ChatAUEB - Menu");
@@ -255,9 +246,37 @@ public class Gui {
 
         JMenuBar menuBar = createMenuBar(mainFrame);
         mainFrame.setJMenuBar(menuBar);
-
-        mainFrame.setVisible(true);        
+        mainFrame.setVisible(true);
+        mainFrame.add(createMainLabelPhoto()); 
+       //mainFrame.add(createMainLabelText());  
     }
+
+    //Method used to import png(photo of university) on the main frame
+
+    public static JLabel createMainLabelPhoto() {
+
+        ImageIcon image = new ImageIcon("src/Μαράσλειο_Μέγαρο_9723.jpg");
+        JLabel label = new JLabel();
+        label.setIcon(image);
+        label.setBounds(500, 30, 1000, 1000);
+        label.setHorizontalAlignment(JLabel.CENTER);  
+        return label;   
+    }
+
+    public static JLabel createMainLabelText() {
+
+        JLabel label = new JLabel("ChatAUEB : Ο επαγγελματικός οδηγός του Οικονομικού Πανεπιστημίου Αθηνών.");
+        label.setBounds(500, 500, 480, 50); // Adjusted the width to 480 for centering
+        label.setForeground(Color.WHITE); //White text colour font
+        label.setHorizontalAlignment(JLabel.CENTER); // Center the text
+        
+        // Set the font to bold
+        Font boldFont = new Font(label.getFont().getFontName(), Font.BOLD, 20);
+        label.setFont(boldFont);
+        return label;
+    }
+
+    
     
     //Method used to create all the components included in the MenuBar
     public static JMenuBar createMenuBar(JFrame calledByFrame) {
@@ -295,8 +314,6 @@ public class Gui {
         questionnaire.setBackground(RED);
         questionnaire.setForeground(Color.WHITE);
 
-        calledBy = calledByFrame;
-
         JMenuItem answer = new JMenuItem("Fill in questionnaire");
         answer.setBackground(RED);
         answer.setForeground(Color.WHITE);
@@ -309,7 +326,7 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 openQuestionnaireFrame(1);
-                calledBy.dispose();
+                calledByFrame.dispose();
             }
         });
 
@@ -317,7 +334,7 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 openQuestionnaireFrame(2);
-                calledBy.dispose();
+                calledByFrame.dispose();
             }
         });
 
@@ -414,12 +431,12 @@ public class Gui {
                         processAnswers(tempRadioButtons);
                         int count = user.countAnswers();
                         if (count < 10) {
-                            warningDialog = new JDialog();
-                            warningDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-                            warningDialog.setSize(400, 400);
-                            warningDialog.getContentPane().setBackground(BLACK);
-                            warningDialog.setLayout(null);
-                            warningDialog.setVisible(true);
+                            JDialog dialog = new JDialog();
+                            dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+                            dialog.setSize(400, 400);
+                            dialog.getContentPane().setBackground(BLACK);
+                            dialog.setLayout(null);
+                            dialog.setVisible(true);
 
                             JLabel warning1 = new JLabel("Έχεις απαντήσει σε " + count + " απαντήσεις");
                             JLabel warning2 = new JLabel("Προτείνουμε να απαντήσεις σε περισσότερες από 10 ερωτήσεις");
@@ -429,8 +446,8 @@ public class Gui {
                             warning2.setBounds(10, 60, 380, 30);
                             warning2.setBackground(BLACK);
                             warning2.setForeground(Color.WHITE);
-                            warningDialog.add(warning1);
-                            warningDialog.add(warning2);
+                            dialog.add(warning1);
+                            dialog.add(warning2);
 
                             JButton back = new JButton("Back");
                             back.setBackground(RED);
@@ -439,11 +456,11 @@ public class Gui {
                             back.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    warningDialog.dispose();
+                                    dialog.dispose();
                                 }
                             });
                             back.setBounds(10, 240, 150, 30);
-                            warningDialog.add(back);
+                            dialog.add(back);
 
                             JButton cont = new JButton("Continue Anyway");
                             cont.setBackground(RED);
@@ -452,13 +469,13 @@ public class Gui {
                             cont.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    warningDialog.dispose();
+                                    dialog.dispose();
                                     questionnaireFrame.dispose();
                                     openResponseFrame("");
                                 }
                             });
                             cont.setBounds(230, 240, 150, 30);
-                            warningDialog.add(cont);
+                            dialog.add(cont);
                 
                         } else {
                             questionnaireFrame.dispose();
@@ -536,12 +553,10 @@ public class Gui {
         prompt.setBackground(RED);
         prompt.setForeground(Color.WHITE);
 
-        calledBy = calledByFrame;
-
         prompt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openPromptFrame(calledBy);
+                openPromptFrame(calledByFrame);
             }
         });
 
@@ -587,10 +602,11 @@ public class Gui {
         promptFrame.add(enter);
 
         enter.addActionListener(new ActionListener() {
-            JTextField promptField1 = promptField;
             @Override
             public void actionPerformed(ActionEvent e) {
-                promptFrameEntryPressed(promptField1);
+                String prompt = promptField.getText();
+                promptFrame.dispose();
+                openResponseFrame(prompt);
             }
         });
         
@@ -613,21 +629,13 @@ public class Gui {
         back.setBounds(50, 250, 70, 20);
         promptFrame.add(back);
 
-        calledBy = calledByFrame;
-
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 promptFrame.dispose();
-                calledBy.setVisible(true);
+                calledByFrame.setVisible(true);
             }
         });
-    }
-
-    public static void promptFrameEntryPressed(JTextField promptField) {
-        String prompt = promptField.getText();
-        promptFrame.dispose();
-        openResponseFrame(prompt);
     }
 
     public static void openResponseFrame(String prompt) {        
