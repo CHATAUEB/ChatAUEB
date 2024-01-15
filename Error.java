@@ -15,11 +15,7 @@ public class Error {
     *@param errorMessage the message the Error object displays
     */
     
-    public Error(String errorName, String errorMessage) {
-        this.errorName = errorName;
-        this.errorMessage = errorMessage;
-    }
-
+  
     /**
     *Displays a message signifiying that an error has occured during the registration process
     *<p>
