@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import java.lang.reflect.Field;
 
 public class UnitTest {
     //Unit Testing QueryBuilder class (trexei mia xara)
@@ -213,6 +214,18 @@ public class UnitTest {
 
         // Stop the progress bar thread
         progressBar.interrupt();
+    }
+
+    @Test
+    public void testErrorCreation() throws Exception {
+        Error error1 = Error.invalidCredentials;
+        Field field = Error.class.getDeclaredField("errorName");
+        field.setAccessible(true);
+        assertEquals("Invalid Credentials", (String) field.get(error1));
+        field = Error.class.getDeclaredField("errorMessage");
+        field.setAccessible(true);
+        assertEquals("You have not entered valid credentials. Please try again", (String) field.get(error1));
+
     }
     
     /*
