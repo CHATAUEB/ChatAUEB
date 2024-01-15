@@ -4,7 +4,37 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class UnitTest {
+    //Unit Testing QueryBuilder class (trexei mia xara)
 
+    @Test
+    public void testQuery() {
+        // Sample data for testing
+        String[] questions = {"Question1", "Question2", "Question3"};
+        String[] answers = {"Answer1", "Answer2", "Answer3"};
+        String message = "Additional message";
+
+        // Call the query method and store the result
+        String result = QueryBuilder.query(questions, answers, message);
+
+        // Expected result based on the provided data
+        String expected = "Σε ενα πανεπιστημιο υπαρχουν 8 τμηματα: " +
+                "1) διεθνων ευρωπαικων και οικονομικων σπουδων, " +
+                "2) οικονομικων επιστημων, " +
+                "3) διοικητικης επιστημης και τεχνολογιας, " +
+                "4) οργανωσης και διοικησης επιχειρησεων, " +
+                "5) λογιστικης και χρηματοοικονομικης, " +
+                "6) μαρκετινγκ και επικοινωνιας, " +
+                "7) πληροφορικης, " +
+                "8) στατιστικης. " +
+                "Ενας μαθητης θελει να σπουδασει σε αυτο το πανεπιστημιο, αλλα δεν ξερει ποιο τμημα να διαλεξει. " +
+                "Ο μαθητης απαντησε στο παρακατω ερωτηματολογιο οσων αφορα στις προτιμησεις του: " +
+                "Question1 Answer1 Question2 Answer2 Question3 Answer3 Additional message";
+
+        // Check if the result matches the expected value
+        assertEquals(expected, result);
+    }
+
+    
     //Unit Testing Questions class (trexei mia xara)
     
     @Test
