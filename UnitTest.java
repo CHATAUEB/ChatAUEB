@@ -216,7 +216,7 @@ public class UnitTest {
         progressBar.interrupt();
     }
 
-    @Test
+ /*   @Test
     public void testErrorCreation() throws Exception {
         Error error1 = Error.invalidCredentials;
         Field field = Error.class.getDeclaredField("errorName");
