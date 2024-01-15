@@ -266,5 +266,8 @@ public class UnitTest {
 
         //Unit Testing ProgressBar 
         unitTest.testProgressBar()
+
+        //Unit Testing Error
+        unitTest.testErrorCreation();
     }
 }
