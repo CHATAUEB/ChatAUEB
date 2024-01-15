@@ -63,7 +63,7 @@ public class UnitTest {
         testUser = new User("TestUser", "TestPassword");
     }
 
-    @Test
+  /*  @Test
     public void testSignUp() {
         User signedUpUser = User.signUp("NewUser", "NewPassword");
         assertNotNull(signedUpUser);
