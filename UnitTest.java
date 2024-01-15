@@ -53,78 +53,84 @@ public class UnitTest {
 
     }
     
-    //Unit Testing User class
-/*
-    @Test
-    public void testCreateDefaultUsers() {
-        User.createDefaultUsers();
-        assertNotNull(User.nullUser);
-        assertNotNull(User.guestUser);
+    //Unit Testing User class 
+
+    private User testUser;
+
+    @Before
+    public void setUp() {
+        User.createDefaultUsers(); // Initialize nullUser and guestUser
+        testUser = new User("TestUser", "TestPassword");
     }
 
     @Test
     public void testSignUp() {
-        User.createDefaultUsers();
+        User signedUpUser = User.signUp("NewUser", "NewPassword");
+        assertNotNull(signedUpUser);
+        assertEquals("NewUser", signedUpUser.username);
+        assertEquals("NewPassword", signedUpUser.password);
+        assertTrue(User.UserList.contains(signedUpUser));
+    }
 
-        // Test signing up with invalid credentials
-        assertEquals(User.nullUser, User.signUp("", ""));
-        assertEquals(User.nullUser, User.signUp("validUsername", ""));
+    @Test
+    public void testSignUpWithInvalidCredentials() {
+        User invalidUser = User.signUp("", "");
+        assertEquals(User.nullUser, invalidUser);
+    }
 
-        // Test signing up with a taken username
-        User existingUser = new User("existingUser", "password");
-        assertEquals(User.nullUser, User.signUp("existingUser", "newPassword"));
-
-        // Test successful sign up
-        User newUser = User.signUp("newUser", "newPassword");
-        assertEquals("newUser", newUser.username);
-        assertEquals("newPassword", newUser.password);
-        assertEquals(newUser, User.logIn("newUser", "newPassword"));
+    @Test
+    public void testSignUpWithTakenUsername() {
+        User existingUser = User.signUp("Guest", "1234");
+        assertEquals(User.nullUser, existingUser);
     }
 
     @Test
     public void testLogIn() {
-        User.createDefaultUsers();
+        User loggedInUser = User.logIn("TestUser", "TestPassword");
+        assertNotNull(loggedInUser);
+        assertEquals("TestUser", loggedInUser.username);
+        assertEquals("TestPassword", loggedInUser.password);
+    }
 
-        // Test login with invalid credentials
-        assertEquals(User.nullUser, User.logIn("", ""));
-        assertEquals(User.nullUser, User.logIn("validUsername", ""));
+    @Test
+    public void testLogInWithInvalidCredentials() {
+        User invalidUser = User.logIn("", "");
+        assertEquals(User.nullUser, invalidUser);
+    }
 
-        // Test login with non-existing username
-        assertEquals(User.nullUser, User.logIn("nonExistingUser", "password"));
+    @Test
+    public void testLogInWithWrongPassword() {
+        User wrongPasswordUser = User.logIn("TestUser", "WrongPassword");
+        assertEquals(User.nullUser, wrongPasswordUser);
+    }
 
-        // Test login with wrong password
-        User existingUser = new User("existingUser", "password");
-        assertEquals(User.nullUser, User.logIn("existingUser", "wrongPassword"));
-
-        // Test successful login
-        assertEquals(existingUser, User.logIn("existingUser", "password"));
+    @Test
+    public void testLogInWithNonexistentUsername() {
+        User nonExistentUser = User.logIn("NonExistentUser", "SomePassword");
+        assertEquals(User.nullUser, nonExistentUser);
     }
 
     @Test
     public void testClearAnswers() {
-        User user = new User("testUser", "testPassword");
-        user.answers[0] = "answer1";
-        user.answers[1] = "answer2";
-
-        user.clearAnswers();
-
-        for (String answer : user.answers) {
+        // Assuming clearAnswers method works as expected
+        testUser.clearAnswers();
+        for (String answer : testUser.answers) {
             assertEquals("", answer);
         }
     }
 
     @Test
     public void testCountAnswers() {
-        User user = new User("testUser", "testPassword");
-        user.answers[0] = "answer1";
-        user.answers[2] = "answer2";
-
-        assertEquals(2, user.countAnswers());
-
-        // Test with no answers
-        assertEquals(0, new User("emptyUser", "emptyPassword").countAnswers());
+        // Assuming countAnswers method works as expected
+        assertEquals(0, testUser.countAnswers());
+        
+        // Let's simulate answering a few questions
+        testUser.answers[0] = "Answer1";
+        testUser.answers[5] = "Answer2";
+        testUser.answers[10] = "Answer3";
+        
+        assertEquals(3, testUser.countAnswers());
     }
-    */
     
     //Unit Test Labels class ( trexei mia xara )
     
@@ -172,15 +178,17 @@ public class UnitTest {
     //Unit Test Message class (trexei mia xara)
     
     @Test
-    public void testMessage() {
-        
-        String userMessage = "Test message";
-        Message message = new Message(userMessage);
+    public void testRun() {
+        // Arrange
+        String expectedResponse = "Test response";
+        String messageContent = "Test message";
 
-        message.run(); // Sending the message to OpenAI API
+        // Act
+        Message message = new Message(messageContent);
+        message.run();
 
-        message.waitingForResponse(); // Wait for the response to be received
-        assertNotNull(Message.retResponse); // Ensure that the response is not null
+        // Assert
+        assertEquals(expectedResponse, Message.retResponse);
     }
     
     /*
@@ -190,17 +198,24 @@ public class UnitTest {
     private void executeTests() {
         UnitTest unitTest = new UnitTest();
 
+        //Unit Testing QueryBuilder class
+        unitTest.testQuery();
+            
         // Unit Testing Questions class
         unitTest.testCreateQuestionsOnly();
 
-        /*
+        //Unit Testing User class
+        unitTest.testSignUp();
+        unitTest.testLogIn();
+        unitTest.testClearAnswers();
+        unitTest.testCountAnswers();
+        
         // Unit Testing User class
         unitTest.testCreateDefaultUsers();
         unitTest.testSignUp();
         unitTest.testLogIn();
         unitTest.testClearAnswers();
         unitTest.testCountAnswers();
-        */
 
         //Unit Test Labels class
         unitTest.testCreatePurpose();
