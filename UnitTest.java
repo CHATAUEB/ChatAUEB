@@ -35,7 +35,6 @@ public class UnitTest {
         // Check if the result matches the expected value
         assertEquals(expected, result);
     }
-
     
     //Unit Testing Questions class (trexei mia xara)
     
@@ -190,6 +189,31 @@ public class UnitTest {
         // Assert
         assertEquals(expectedResponse, Message.retResponse);
     }
+
+    //Unit Testing ProgressBar 
+
+     @Test
+    public void testProgressBar() {
+        final ProgressBar progressBar = new ProgressBar();
+        progressBar.start();
+
+        try {
+            // Sleep for some time to allow the progress bar to update
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Check if the progress bar's value has been updated
+        assertTrue(progressBar.bar.getValue() > 0);
+
+        // Check if the progress bar's string has been updated
+        assertNotNull(progressBar.bar.getString());
+        assertFalse(progressBar.bar.getString().isEmpty());
+
+        // Stop the progress bar thread
+        progressBar.interrupt();
+    }
     
     /*
     Epomenes klaseis
@@ -226,5 +250,8 @@ public class UnitTest {
             
         //Unit Test Message class
         unitTest.testMessage();
+
+        //Unit Testing ProgressBar 
+        unitTest.testProgressBar()
     }
 }
