@@ -79,7 +79,7 @@ public class Message {
     }
 
     public static String getAPIKEyfromFile() {
-        File keyFile = new File("src\\Config.txt");
+        File keyFile = new File("lib\\Config.txt");
         
         BufferedReader reader;
         FileReader fileReader;
