@@ -67,7 +67,7 @@ public class Gui {
         entryFrame.add(label);
 
          // Upload the png
-        ImageIcon image = new ImageIcon("src/CA.png");
+        ImageIcon image = new ImageIcon("lib/CA.png");
         JLabel label2 = new JLabel();
         label2.setIcon(image);
         label2.setBounds(176, 75, 150, 150);
@@ -255,7 +255,7 @@ public class Gui {
 
     public static JLabel createMainLabelPhoto() {
 
-        ImageIcon image = new ImageIcon("src/Μαράσλειο_Μέγαρο_9723.jpg");
+        ImageIcon image = new ImageIcon("lib/Μαράσλειο_Μέγαρο_9723.jpg");
         JLabel label = new JLabel();
         label.setIcon(image);
         label.setBounds(500, 30, 1000, 1000);
